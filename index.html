@@ -409,9 +409,9 @@
       <div style={{minHeight:"100vh",paddingTop:62,background:"var(--bg)"}}>
 
         {expanded && (
-          <div onClick={closeModal} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.92)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",cursor:"zoom-out"}}>
-            <div onClick={function(e){e.stopPropagation();}} style={{width:"90vw",maxWidth:1200,borderRadius:12,overflow:"hidden",boxShadow:"0 24px 80px rgba(0,0,0,0.6)"}}>
-              <video ref={modalVideoRef} src="Screen Recording 2026 V2.mp4" muted playsInline style={{width:"100%",display:"block",aspectRatio:"16/9",background:"#0d0d0d"}}/>
+          <div onClick={closeModal} style={{position:"fixed",inset:0,zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",cursor:"zoom-out"}}>
+            <div onClick={function(e){e.stopPropagation();}} style={{width:"82vw",maxWidth:1300,borderRadius:14,overflow:"hidden",boxShadow:"0 32px 80px rgba(0,0,0,0.45)",cursor:"default"}}>
+              <video ref={modalVideoRef} src="Screen Recording 2026 V2.mp4" muted playsInline controls style={{width:"100%",display:"block",aspectRatio:"16/9",background:"#0d0d0d"}}/>
             </div>
           </div>
         )}
