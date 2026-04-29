@@ -635,48 +635,49 @@
 
         {/* RIGHT */}
         <div ref={rightPanelRef} style={{position:"relative",overflow:"hidden"}}>
-          <div style={{display:"none"}}>
-            <video src="Brandcheck.mp4" preload="auto" muted/>
-            <video src="marketing ops audit 2.mp4" preload="auto" muted/>
-            <video src="Screen Recording 2026 V2.mp4" preload="auto" muted/>
-          </div>
-          {active ? (
+
+          {/* Video previews always in DOM — opacity toggle means no load delay on hover */}
+          {[
+            {flag:"brandCheck", src:"Brandcheck.mp4",               pg:"brandCheck"},
+            {flag:"opsAudit",   src:"marketing ops audit 2.mp4",    pg:"opsAudit"},
+            {flag:"caseStudy",  src:"Screen Recording 2026 V2.mp4", pg:"caseStudy"},
+          ].map(function({flag, src, pg}) {
+            var vis = active && active[flag];
+            return (
+              <div key={flag} onClick={vis ? ()=>setPage(pg) : undefined} style={{
+                position:"absolute",top:Math.max(20,previewY),left:20,right:20,
+                opacity:vis?1:0,transition:"opacity 0.18s ease",
+                pointerEvents:vis?"auto":"none",
+                cursor:"pointer",borderRadius:12,overflow:"hidden",
+                boxShadow:vis?"0 8px 40px rgba(0,0,0,0.4)":"none",
+              }}>
+                <video src={src} autoPlay muted loop playsInline style={{width:"100%",display:"block",aspectRatio:"16/9",objectFit:"cover"}}/>
+              </div>
+            );
+          })}
+
+          {/* Non-video preview cards — still conditional, no buffering needed */}
+          {active && !active.brandCheck && !active.opsAudit && !active.caseStudy && (
             <div style={{position:"absolute",top:Math.max(20,previewY),left:20,right:20}}>
-            {(function() {
-              if (active.brandCheck) return (
-                <div key={active.id} style={{width:"100%",animation:"slideIn 0.22s ease both",cursor:"pointer",borderRadius:12,overflow:"hidden",boxShadow:"0 8px 40px rgba(0,0,0,0.4)"}} onClick={()=>setPage("brandCheck")}>
-                  <video src="Brandcheck.mp4" autoPlay muted loop playsInline style={{width:"100%",display:"block",aspectRatio:"16/9",objectFit:"cover"}}/>
+              <div className="preview-card" key={active.id}>
+                <div style={{height:220,background:active.color,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:10}}>
+                  <div style={{fontSize:36}}>{active.icon}</div>
+                  <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#333",opacity:0.35,letterSpacing:"0.1em"}}>{active.tag.toUpperCase()}</div>
                 </div>
-              );
-              if (active.opsAudit) return (
-                <div key={active.id} style={{width:"100%",animation:"slideIn 0.22s ease both",cursor:"pointer",borderRadius:12,overflow:"hidden",boxShadow:"0 8px 40px rgba(0,0,0,0.4)"}} onClick={()=>setPage("opsAudit")}>
-                  <video src="marketing ops audit 2.mp4" autoPlay muted loop playsInline style={{width:"100%",display:"block",aspectRatio:"16/9",objectFit:"cover"}}/>
-                </div>
-              );
-              if (active.caseStudy) return (
-                <div key={active.id} style={{width:"100%",animation:"slideIn 0.22s ease both",cursor:"pointer",borderRadius:12,overflow:"hidden",boxShadow:"0 8px 40px rgba(0,0,0,0.4)"}} onClick={()=>setPage("caseStudy")}>
-                  <video src="Screen Recording 2026 V2.mp4" autoPlay muted loop playsInline style={{width:"100%",display:"block",aspectRatio:"16/9",objectFit:"cover"}}/>
-                </div>
-              );
-              return (
-                <div className="preview-card" key={active.id}>
-                  <div style={{height:220,background:active.color,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:10}}>
-                    <div style={{fontSize:36}}>{active.icon}</div>
-                    <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#333",opacity:0.35,letterSpacing:"0.1em"}}>{active.tag.toUpperCase()}</div>
+                <div style={{padding:"18px 22px",background:"var(--card-bg)"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
+                    <div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,flexShrink:0}}/>
+                    <span style={{fontSize:14,fontWeight:600,color:"var(--fg)",letterSpacing:"-0.015em"}}>{active.title}</span>
+                    <span style={{fontSize:10,color:T.dotColor,marginLeft:"auto",fontWeight:700,letterSpacing:"0.06em"}}>{active.tag.toUpperCase()}</span>
                   </div>
-                  <div style={{padding:"18px 22px",background:"var(--card-bg)"}}>
-                    <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
-                      <div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,flexShrink:0}}/>
-                      <span style={{fontSize:14,fontWeight:600,color:"var(--fg)",letterSpacing:"-0.015em"}}>{active.title}</span>
-                      <span style={{fontSize:10,color:T.dotColor,marginLeft:"auto",fontWeight:700,letterSpacing:"0.06em"}}>{active.tag.toUpperCase()}</span>
-                    </div>
-                    <div style={{fontSize:13,color:"var(--dim)",lineHeight:1.72}}>{active.desc}</div>
-                  </div>
+                  <div style={{fontSize:13,color:"var(--dim)",lineHeight:1.72}}>{active.desc}</div>
                 </div>
-              );
-            })()}
+              </div>
             </div>
-          ) : (
+          )}
+
+          {/* Placeholder when nothing is hovered */}
+          {!active && (
             <div style={{position:"absolute",top:"50%",left:0,right:0,transform:"translateY(-50%)",display:"flex",alignItems:"center",justifyContent:"center",opacity:0.15,flexDirection:"column",gap:10}}>
               <div style={{width:7,height:7,borderRadius:"50%",background:"var(--fg)"}}/>
               <div style={{fontSize:10,letterSpacing:"0.1em",textTransform:"uppercase",color:"var(--fg)",fontFamily:"'DM Mono',monospace"}}>hover a build</div>
