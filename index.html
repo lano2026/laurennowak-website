@@ -587,6 +587,15 @@
     var [active, setActive] = useState(null);
     var [previewY, setPreviewY] = useState(0);
     var rightPanelRef = React.useRef(null);
+    var videoRefs = React.useRef({});
+    React.useEffect(function() {
+      ["brandCheck","opsAudit","caseStudy"].forEach(function(flag) {
+        var el = videoRefs.current[flag];
+        if (!el) return;
+        if (active && active[flag]) { el.currentTime = 0; el.play(); }
+        else { el.pause(); el.currentTime = 0; }
+      });
+    }, [active]);
     return (
       <div style={{display:"grid",gridTemplateColumns:"clamp(320px, 42%, 520px) 1fr",height:"100vh",paddingTop:62}}>
 
@@ -651,7 +660,7 @@
                 cursor:"pointer",borderRadius:12,overflow:"hidden",
                 boxShadow:vis?"0 8px 40px rgba(0,0,0,0.4)":"none",
               }}>
-                <video src={src} autoPlay muted loop playsInline style={{width:"100%",display:"block",aspectRatio:"16/9",objectFit:"cover"}}/>
+                <video ref={function(el){videoRefs.current[flag]=el;}} src={src} muted loop playsInline style={{width:"100%",display:"block",aspectRatio:"16/9",objectFit:"cover"}}/>
               </div>
             );
           })}
