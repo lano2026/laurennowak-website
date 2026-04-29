@@ -710,11 +710,21 @@
 
   function VideoCard({v, T, i}) {
     var [hov,setHov] = React.useState(false);
+    var videoRef = React.useRef(null);
+    React.useEffect(function() {
+      var el = videoRef.current;
+      if (!el) return;
+      var obs = new IntersectionObserver(function(entries) {
+        if (entries[0].isIntersecting && !el.src) { el.src = v.videoSrc; }
+      }, { rootMargin: "200px" });
+      obs.observe(el);
+      return function() { obs.disconnect(); };
+    }, [v.videoSrc]);
     return (
       <div className="vcard" onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
         style={{transform:hov?"translateY(-2px)":"none",transition:"transform 0.18s",animation:"fadeUp 0.5s "+(0.04*i)+"s ease both",cursor:"default"}}>
         <a href={v.linkedInUrl} target="_blank" style={{display:"block",borderRadius:8,overflow:"hidden",cursor:"pointer"}}>
-          <video src={v.videoSrc} autoPlay muted loop playsInline style={{width:"100%",display:"block",aspectRatio:"9/16",objectFit:"cover"}}/>
+          <video ref={videoRef} autoPlay muted loop playsInline style={{width:"100%",display:"block",aspectRatio:"9/16",objectFit:"cover"}}/>
         </a>
         <div style={{paddingTop:10}}>
           <div style={{fontSize:10,color:T.dotColor,fontWeight:700,letterSpacing:"0.04em",marginBottom:3}}>{v.series}</div>
