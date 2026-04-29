@@ -784,7 +784,7 @@
       var el = videoRef.current;
       if (!el) return;
       var obs = new IntersectionObserver(function(entries) {
-        if (entries[0].isIntersecting && !el.src) { el.src = v.videoSrc; }
+        if (entries[0].isIntersecting && !el.src) { el.src = v.videoSrc; el.play().catch(function(){}); }
       }, { rootMargin: "200px" });
       obs.observe(el);
       return function() { obs.disconnect(); };
