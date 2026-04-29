@@ -635,6 +635,11 @@
 
         {/* RIGHT */}
         <div ref={rightPanelRef} style={{position:"relative",overflow:"hidden"}}>
+          <div style={{display:"none"}}>
+            <video src="Brandcheck.mp4" preload="auto" muted/>
+            <video src="marketing ops audit 2.mp4" preload="auto" muted/>
+            <video src="Screen Recording 2026 V2.mp4" preload="auto" muted/>
+          </div>
           {active ? (
             <div style={{position:"absolute",top:Math.max(20,previewY),left:20,right:20}}>
             {(function() {
