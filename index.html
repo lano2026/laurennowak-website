@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lauren Nowak</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%232563EB'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dot: #2563EB;
+      --fg: #111;
+      --bg: #fff;
+      --dim: #999;
+      --dimmer: #ccc;
+      --border: #ebebeb;
+      --card-bg: #fff;
+      --nav-bg: rgba(255,255,255,0.9);
+      --skill-bg: #f4f4f4;
+    }
+    :root.dark {
+      --fg: #f0f0f0;
+      --bg: #0A0A0A;
+      --dim: rgba(255,255,255,0.38);
+      --dimmer: rgba(255,255,255,0.16);
+      --border: rgba(255,255,255,0.07);
+      --card-bg: #141414;
+      --nav-bg: rgba(10,10,10,0.9);
+      --skill-bg: rgba(255,255,255,0.06);
+    }
+
+    html { transition: background 0.25s; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+      transition: background 0.25s, color 0.25s;
+    }
+    body.scrollable { overflow-y: auto; }
+    ::selection { background: rgba(37,99,235,0.12); }
+
+    @keyframes fadeIn  { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeUp  { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes slideIn { from { opacity:0; transform:scale(0.96) translateY(8px); } to { opacity:1; transform:scale(1) translateY(0); } }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .nav-lnk {
+      font-size: 13px; color: var(--dim); cursor: pointer;
+      letter-spacing: -0.01em; transition: color 0.15s;
+      padding: 4px 0; position: relative;
+    }
+    .nav-lnk:hover { color: var(--fg); }
+    .nav-lnk.on { color: var(--fg); }
+    .nav-lnk.on::after {
+      content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
+      height: 1.5px; background: var(--dot); border-radius: 2px;
+    }
+
+    .build-row { display: flex; align-items: flex-start; padding: 20px 0; cursor: default; }
+    .exp-row   { display: grid; grid-template-columns: 24px 80px 1fr; gap: 0 20px; padding: 18px 0; align-items: start; }
+    .wrow      { transition: opacity 0.15s; cursor: pointer; padding: 20px 0; display: flex; justify-content: space-between; align-items: baseline; }
+    .wrow:hover { opacity: 0.42; }
+
+    .vcard { cursor: pointer; break-inside: avoid; margin-bottom: 18px; }
+    .vcard-thumb { border-radius: 8px; overflow: hidden; position: relative; display: flex; align-items: center; justify-content: center; }
+    .vcard-play { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: opacity 0.18s, transform 0.18s; box-shadow: 0 2px 12px rgba(0,0,0,0.13); }
+    .vcard:hover .vcard-play { opacity: 1 !important; transform: scale(1.08); }
+
+    .pill-btn { font-size: 12px; border-radius: 100px; padding: 5px 14px; cursor: pointer; transition: all 0.15s; border: 1px solid var(--border); background: transparent; color: var(--dim); font-family: inherit; }
+    .pill-btn.on { background: var(--dot); border-color: var(--dot); color: #fff; font-weight: 600; }
+    .pill-btn:hover:not(.on) { color: var(--fg); border-color: var(--dimmer); }
+
+    .skill-chip { background: var(--skill-bg); color: var(--dim); padding: 5px 13px; border-radius: 100px; font-size: 12px; font-weight: 500; }
+
+    .preview-card { border-radius: 12px; overflow: hidden; box-shadow: 0 2px 40px rgba(0,0,0,0.07); border: 1px solid var(--border); background: var(--card-bg); max-width: 540px; width: 100%; animation: slideIn 0.22s ease both; }
+
+    .tweaks-panel { position: fixed; bottom: 22px; right: 22px; background: #111; color: #fff; border-radius: 12px; padding: 18px 20px; width: 212px; z-index: 9999; box-shadow: 0 8px 40px rgba(0,0,0,0.22); animation: fadeIn 0.2s ease; }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  var useState   = React.useState;
+  var useEffect  = React.useEffect;
+
+  var TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "0": "w",
+    "1": "a",
+    "2": "t",
+    "3": "e",
+    "4": "r",
+    "dotColor": "#2563EB",
+    "darkMode": false,
+    "elementIcon": "air",
+    "w": "water",
+    "f": "fire"
+  }/*EDITMODE-END*/;
+
+  /* ─── DATA ─────────────────────────────────────────────── */
+
+  var CAREER = [
+    { year:"2026",      co:"cash app",  role:"marketing strategy & systems lead",                           url:"https://cash.app" },
+    { year:"2025",      co:"cash app",  role:"product growth & crm strategy",                              url:"https://cash.app" },
+    { year:"2024",      co:"afterpay",  role:"customer growth & engagement strategy",                      url:"https://afterpay.com" },
+    { year:"2022–2023", co:"afterpay",  role:"channel marketing specialist, crm & customer communications", url:"https://afterpay.com" },
+  ];
+
+  var BUILDS = [
+    { id:1, title:"multi-agent marketing orchestrator", sub:"brief generation in under 2 minutes", desc:"Four specialist AI agents chained in sequence: research, strategy, campaign, content. Each agent's output feeds the next. Objective to complete marketing brief in under two minutes, with human-in-the-loop review before anything ships.", color:"#EDE9FF", tag:"Automation", icon:"⚡", caseStudy:true },
+    { id:2, title:"marketing ops audit",                sub:"risk-scored report in under 60 seconds", desc:"Structured AI audit that takes a plain-language description of a marketing ops setup and returns a risk-scored report. Identifies single points of failure, undocumented dependencies, and ranks automation opportunities by effort and impact.", color:"#E0EEFF", tag:"Ops", icon:"📊", opsAudit:true },
+    { id:3, title:"brand check",                        sub:"brand compliance audit in under a minute", desc:"Paste any marketing content and upload your brand guidelines. The audit checks every dimension of the brand profile and returns a pass, warning, or fail with specific issues flagged.", color:"#F0E4FF", tag:"Brand", icon:"✓", brandCheck:true },
+    ];
+
+  var VIDEOS = [
+    { id:9,  series:"required reading",      title:"what ai will do to jobs",            videoSrc:"https://pub-c2427c0e77c245bfbb192ab5750ce4d6.r2.dev/AIEconomy.mp4",           linkedInUrl:"https://www.linkedin.com/posts/laurenashleynowak_required-reading-what-ai-will-do-to-jobs-activity-7450566217683075072-m_Nz" },
+    { id:15, series:"ai term of the day",    title:"hallucination",                      videoSrc:"https://pub-c2427c0e77c245bfbb192ab5750ce4d6.r2.dev/hallucination.mp4",       linkedInUrl:"https://www.linkedin.com/feed/update/urn:li:activity:7442223774621667328/" },
+    { id:7,  series:"ai article of the day", title:"the new jobs being created by ai",   videoSrc:"https://pub-c2427c0e77c245bfbb192ab5750ce4d6.r2.dev/AIVideo.mp4",            linkedInUrl:"https://www.linkedin.com/posts/laurenashleynowak_ai-article-of-the-week-the-new-jobs-being-activity-7446934778089738240-grF5" },
+    { id:4,  series:"paper of the week",     title:"ai can't beat this test",            videoSrc:"https://pub-c2427c0e77c245bfbb192ab5750ce4d6.r2.dev/AIIntelligence%20.mp4",  linkedInUrl:"https://www.linkedin.com/posts/laurenashleynowak_paper-of-the-week-ai-cant-beat-this-activity-7449471527042932736-wImf" },
+    { id:16, series:"ai term of the day",    title:"large language models",              videoSrc:"https://pub-c2427c0e77c245bfbb192ab5750ce4d6.r2.dev/LLM.mp4",               linkedInUrl:"https://www.linkedin.com/feed/update/urn:li:activity:7442586107810320384/" },
+    { id:18, series:"just dropped",          title:"claude opus 4.7",                    videoSrc:"https://pub-c2427c0e77c245bfbb192ab5750ce4d6.r2.dev/Claude%20Opus%204.7.mp4", linkedInUrl:"https://www.linkedin.com/posts/laurenashleynowak_just-dropped-anthropics-new-model-activity-7452370569997590528--x4h?utm_source=share&utm_medium=member_desktop&rcm=ACoAAA44pa4BrAuQPYaCUlX5Bu1Z3wuN9RZXIgI" },
+  ];
+
+  var RESUME_EXP = [
+    { role:"marketing strategy & systems lead", co:"cash app", coParent:"block", coUrl:"https://cash.app", period:"5/25–present",
+      desc:"Experimented with AI-assisted tooling to streamline campaign planning and improve marketing operational systems. Built structured planning frameworks aligning messaging, audience strategy, and channel execution, improving cross-functional coordination across product marketing, creative, and marketing operations. Established a scalable campaign tiering model used across multiple business lines, reducing production churn and improving launch consistency." },
+    { role:"product growth & crm strategy", co:"cash app", coParent:"block", coUrl:"https://cash.app", period:"2/24–5/25",
+      desc:"Built an internal AI experimentation hub in Notion featuring tool demos, resources, and real-world use cases to accelerate AI adoption across marketing teams. Developed AI-driven tools that reduce manual work by 10–20 hours per week. Drove consumer growth for commerce marketing through integrated lifecycle and promotional campaigns, delivering a +94% QoQ increase in app installs. Delivered $40M in incremental GPV in December 2024 (4× YoY)." },
+    { role:"customer growth & engagement strategy", co:"afterpay", coParent:"block", coUrl:"https://afterpay.com", period:"8/23–2/24",
+      desc:"Selected for the AI Pod to identify AI goals, build roadmaps, and pilot AI tools across commerce marketing. Led marketing strategy across email and push channels, contributing $59.3M in GPV during H2. Executed Cyber Week campaigns driving 24% YoY growth in in-app active users and $9.5M in incremental revenue. the highest-performing Cyber Week in program history." },
+    { role:"channel marketing specialist, crm & customer communications", co:"afterpay", coParent:"block", coUrl:"https://afterpay.com", period:"2/22–8/23",
+      desc:"Developed global integrated channel best practices and aligned strategic execution for email marketing communications. Facilitated Afterpay's CRM migration for all regions. Received the Marvelous Mint Award within 90 days of hire for outstanding contributions." },
+    { role:"coordinator, crm & email", co:"tinuiti", coUrl:"https://tinuiti.com", period:"12/20–2/22",
+      desc:"Managed tactical execution of email marketing campaigns for clients including DoorDash, Vera Bradley, and Estée Lauder. Built workflows and segments in enterprise-level email platforms ensuring timely and accurate deployment." },
+    { role:"email marketing specialist", co:"corel corporation", coUrl:"https://www.corel.com/en/", period:"3/20–12/20",
+      desc:"Designed and executed email campaigns for a database of 10M+ contacts, achieving a 22% YoY revenue increase. Delivered the highest monthly revenue in Alludo's history, exceeding $132K, through innovative EDM strategies." },
+  ];
+
+  var WRITING = [
+    { id:1, title:"the approval loop is the problem. not your team.", min:2 },
+    { id:2, title:"what building six versions of the same tool taught me", min:2 },
+    { id:3, title:"i ran a real brief through my ai pipeline. here's what actually happened.", min:1 },
+  ];
+
+  var ARTICLES = {
+    1: {
+      title: "the approval loop is the problem. not your team.",
+      min: 2,
+      body: [
+        "a few months ago i was working on a go-to-market campaign for a product launch. good team. smart people. everyone cared. it took several months to ship.",
+        "not because anyone was slow. not because the work was bad. because the brief had to pass through a marketing manager, a content team, multiple marketing reviewers, an analytics team to identify audiences, legal to approve copy, a copywriter, and back to content.",
+        "every handoff was a waiting room. every approval was a chance for context to get lost or for someone to be out of office.",
+        "when i looked at where time was dying, it wasn't in the writing. it wasn't in the strategy. it was in the gaps between steps. the brief sitting in someone's inbox. a stakeholder getting up to speed from scratch. the original intent slowly degrading as it passed through more hands.",
+        "when people say ai will speed up marketing, they mean content generation. more copy, faster. but generating content was never the bottleneck. the bottleneck was alignment. getting six people in different functions to share a single understanding of the objective, the audience, the message, and the rationale before anyone touched a deliverable.",
+        "a multi-agent pipeline that runs research, strategy, campaign architecture, and content messaging sequentially. each agent builds directly on the last. no context lost between steps. the whole chain runs in under two minutes and ends with a human review stage where you can approve or push back with notes and re-run it.",
+        "the brief arrives at the human review stage already coherent. research informing strategy. strategy informing campaign structure. campaign structure informing messaging. the alignment work happens inside the pipeline before it lands on anyone's desk.",
+        "i tested it on a real objective: drive awareness for a new sustainable sneaker brand among gen z. the research agent surfaced real audience signals. the strategy agent made actual channel prioritization calls. by the time the content agent ran, it was working from a real brief, not a blank page.",
+        "campaigns don't slow down because people are inefficient. they slow down because the process was never designed for the speed ai makes possible.",
+      ]
+    },
+    2: {
+      title: "what building six versions of the same tool taught me",
+      min: 2,
+      body: [
+        "before i started building the multi-agent orchestrator, i had one main concern: would it actually work. would the agents chain correctly. would something coherent come out the other end.",
+        "that wasn't the hard part.",
+        "every small update i made to one part of the pipeline broke something else. a change to how one agent passed context forward would cause a timeout two agents later. the build was not one problem. it was a chain of small problems that only revealed themselves after the previous one was solved.",
+        "v1 timed out constantly. i hadn't accounted for how much the api needed breathing room between calls. once i understood that, i built in retry logic with exponential backoff. the tool would pause, wait, and try again rather than failing immediately.",
+        "v1 also looked wrong. emojis everywhere. cluttered visual design. it felt like a demo, not something you would trust with a real marketing brief. the visual design was undermining confidence in the output before anyone had even read it.",
+        "so i rebuilt the ui. replaced the emojis with custom svg icons. cleaned up the layout. added a dark theme. by v6 it looked like something a team would actually open in a meeting.",
+        "v6 still isn't finished. the tool works. what it does not do yet is feel like mine. the ui doesn't match the aesthetic of the rest of my work. that will be v7.",
+        "six versions taught me that building with ai is closer to systems design than prompting. every decision about one part of the pipeline has downstream consequences. that only shows up when you actually build something and watch it break.",
+      ]
+    },
+    3: {
+      title: "i ran a real brief through my ai pipeline. here's what actually happened.",
+      min: 1,
+      body: [
+        "i used a real objective. drive awareness for a sustainable sneaker brand among gen z. a campaign i had actually worked on.",
+        "the research agent surprised me. i expected general market observations. instead, it surfaced detailed competitive intelligence on specific brands in the space. positioning, messaging patterns, where competitors were winning and where they weren't.",
+        "the strategy agent built a positioning framework from that research. channel priorities, audience segments, success metrics.",
+        "the content agent produced messaging specific to the brand situation, not generic sustainability talking points.",
+        "but the output wasn't clean. each agent came back with too much. long sections that buried the useful parts. the pipeline didn't need to be smarter. it needed an editor. that's still a human job.",
+        "i shared a demo on linkedin. what struck me about the responses wasn't the praise. it was how many people immediately recognized the problem it was solving. they had experienced the same slow brief process.",
+        "ai didn't replace the thinking. it just meant the thinking could start from somewhere real.",
+      ]
+    },
+  };
+
+  /* ─── ARTICLE PAGE ──────────────────────────────────────── */
+
+  function ArticlePage({T, setPage, articleId}) {
+    var article = ARTICLES[articleId];
+    if (!article) return null;
+    return (
+      <div style={{minHeight:"100vh",paddingTop:62,background:"var(--bg)"}}>
+        <div style={{maxWidth:480,margin:"0 auto",padding:"60px 40px 120px"}}>
+
+          <div style={{marginBottom:40,animation:"fadeUp 0.4s ease both"}}>
+            <span onClick={()=>setPage("writing")} style={{fontSize:13,color:"var(--dim)",cursor:"pointer",display:"inline-flex",alignItems:"center",gap:6,transition:"color 0.15s"}}
+              onMouseEnter={e=>e.currentTarget.style.color="var(--fg)"}
+              onMouseLeave={e=>e.currentTarget.style.color="var(--dim)"}>
+              ← writing
+            </span>
+          </div>
+
+          <div style={{marginBottom:44,animation:"fadeUp 0.45s ease both"}}>
+            <h1 style={{fontSize:"clamp(20px,3vw,30px)",fontWeight:700,letterSpacing:"-0.03em",color:"var(--fg)",lineHeight:1.25,marginBottom:10}}>{article.title}</h1>
+            <div style={{fontSize:12,color:"var(--dim)"}}>{article.min} min read</div>
+          </div>
+
+          <div style={{animation:"fadeUp 0.5s 0.08s ease both"}}>
+            {article.body.map(function(para, i) {
+              return (
+                <p key={i} style={{fontSize:15,color:"var(--fg)",lineHeight:1.85,marginBottom:22}}>{para}</p>
+              );
+            })}
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  var SKILLS = ["Claude","GPT-4","Make.com","Zapier","HubSpot","n8n","Content Strategy","Demand Gen","CRM","Email Marketing","Paid Social","SEO","AI Workflows","Airtable"];
+
+  var ALL_SERIES = ["all","just dropped","ai term of the day","paper of the week","ai article of the day","required reading","claude mythos preview","demos"];
+
+  /* ─── BRAND CHECK PAGE ─────────────────────────────────── */
+
+  function BrandCheckPage({T, setPage}) {
+    var [videoHov, setVideoHov] = React.useState(false);
+    var videoRef = React.useRef(null);
+    function handleVideoEnter() {
+      setVideoHov(true);
+      if (videoRef.current) videoRef.current.play();
+    }
+    function handleVideoLeave() {
+      setVideoHov(false);
+      if (videoRef.current) videoRef.current.pause();
+    }
+    return (
+      <div style={{minHeight:"100vh",paddingTop:62,background:"var(--bg)"}}>
+        <div style={{maxWidth:820,margin:"0 auto",padding:"60px 40px 120px"}}>
+
+          <div style={{marginBottom:44,animation:"fadeUp 0.45s ease both",display:"flex",alignItems:"flex-start",gap:0}}
+            onMouseEnter={handleVideoEnter} onMouseLeave={handleVideoLeave}>
+            <div style={{width:28,flexShrink:0,paddingTop:14}}>
+              <div style={{width:12,height:12,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:videoHov?1:0,transform:videoHov?"scale(1)":"scale(0.4)"}}/>
+            </div>
+            <div style={{flex:1,borderRadius:12,overflow:"hidden",boxShadow:"0 8px 40px rgba(0,0,0,0.25)"}}>
+              <video ref={videoRef} src="Brandcheck.mp4" muted playsInline style={{width:"100%",display:"block",aspectRatio:"16/9",background:"#0d0d0d",cursor:"pointer"}}/>
+            </div>
+          </div>
+
+          <div style={{marginBottom:32,animation:"fadeUp 0.5s 0.1s ease both"}}>
+            <p style={{fontSize:17,color:"var(--fg)",lineHeight:1.8,marginBottom:16}}>
+              brand consistency breaks down at the edges. voice and tone drift across teams. content ships with prohibited claims that trigger legal review or audit issues with regulators after launch.
+            </p>
+            <p style={{fontSize:17,color:"var(--dim)",lineHeight:1.8}}>
+              brand managers spend their time gatekeeping instead of building. marketers self-edit without confidence. agencies deliver work that has to be redone.
+            </p>
+          </div>
+
+          <div style={{marginBottom:32,animation:"fadeUp 0.5s 0.12s ease both"}}>
+            <h2 style={{fontSize:22,fontWeight:700,letterSpacing:"-0.02em",color:"var(--fg)",marginBottom:20}}>how it works</h2>
+            {[
+              {term:"brand profile ingestion", desc:"upload a brand guidelines deck or pdf. the tool extracts the text in-browser and uses claude to convert it into a structured brand profile. seconds, not days."},
+              {term:"content analysis", desc:"paste any marketing content. the audit checks it against every dimension of the loaded profile and flags the specific text that triggered each issue."},
+              {term:"severity ranking", desc:"each issue is tagged critical, warning, or minor. compliance risks fail the audit. voice drift triggers a warning. stylistic issues don't block approval."},
+              {term:"report generation", desc:"overall pass/warning/fail, voice match score, every issue with evidence and a fix, what works section. one-click word doc export."},
+            ].map(function(item) {
+              return (
+                <div key={item.term} style={{display:"flex",gap:12,marginBottom:18}}>
+                  <div style={{paddingTop:7,flexShrink:0}}>
+                    <div style={{width:5,height:5,borderRadius:"50%",background:"var(--fg)",opacity:0.3}}></div>
+                  </div>
+                  <div>
+                    <div style={{fontSize:16,fontWeight:700,color:"var(--fg)",letterSpacing:"-0.01em",marginBottom:3}}>{item.term}</div>
+                    <div style={{fontSize:16,color:"var(--dim)",lineHeight:1.72}}>{item.desc}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div style={{animation:"fadeUp 0.5s 0.16s ease both",marginBottom:52}}>
+            <p style={{fontSize:17,color:"var(--dim)",lineHeight:1.8}}>
+              upload guidelines to stakeholder-ready audit in under a minute. no review cycle, no guessing what the brand manager meant, no claims slipping through.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  /* ─── OPS AUDIT CASE STUDY ─────────────────────────────── */
+
+  function OpsAuditPage({T, setPage}) {
+    var [videoHov, setVideoHov] = React.useState(false);
+    var videoRef = React.useRef(null);
+    function handleVideoEnter() {
+      setVideoHov(true);
+      if (videoRef.current) videoRef.current.play();
+    }
+    function handleVideoLeave() {
+      setVideoHov(false);
+      if (videoRef.current) videoRef.current.pause();
+    }
+    return (
+      <div style={{minHeight:"100vh",paddingTop:62,background:"var(--bg)"}}>
+        <div style={{maxWidth:820,margin:"0 auto",padding:"60px 40px 120px"}}>
+
+          <div style={{marginBottom:44,animation:"fadeUp 0.45s ease both",display:"flex",alignItems:"flex-start",gap:0}}
+            onMouseEnter={handleVideoEnter} onMouseLeave={handleVideoLeave}>
+            <div style={{width:28,flexShrink:0,paddingTop:14}}>
+              <div style={{width:12,height:12,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:videoHov?1:0,transform:videoHov?"scale(1)":"scale(0.4)"}}/>
+            </div>
+            <div style={{flex:1,borderRadius:12,overflow:"hidden",boxShadow:"0 8px 40px rgba(0,0,0,0.25)"}}>
+              <video ref={videoRef} src="marketing ops audit 2.mp4" muted playsInline style={{width:"100%",display:"block",aspectRatio:"16/9",background:"#0d0d0d",cursor:"pointer"}}/>
+            </div>
+          </div>
+
+          <div style={{marginBottom:32,animation:"fadeUp 0.5s 0.1s ease both"}}>
+            <p style={{fontSize:17,color:"var(--fg)",lineHeight:1.8,marginBottom:16}}>
+              marketing operations runs on tribal knowledge. lead routing, attribution, automation chains, integrations. most of it lives in one person's head, undocumented.
+            </p>
+            <p style={{fontSize:17,color:"var(--dim)",lineHeight:1.8}}>
+              when that person is unavailable, everything slows down or breaks. the cost only shows up when something fails.
+            </p>
+          </div>
+
+          <div style={{marginBottom:32,animation:"fadeUp 0.5s 0.12s ease both"}}>
+            <h2 style={{fontSize:22,fontWeight:700,letterSpacing:"-0.02em",color:"var(--fg)",marginBottom:20}}>how it works</h2>
+            {[
+              {term:"stack parsing", desc:"extracts every tool from the input and tags each one with a risk level based on its role in the workflow."},
+              {term:"dependency mapping", desc:"identifies connections between tools, teams, and processes. flags anywhere a workflow depends on a single person or undocumented integration."},
+              {term:"risk audit", desc:"surfaces single points of failure with one-sentence descriptions that name the specific exposure rather than generic warnings."},
+              {term:"report generation", desc:"produces a 1-10 risk score, a summary, and a ranked list of automation opportunities tagged by effort and impact. one-click word doc export."},
+            ].map(function(item) {
+              return (
+                <div key={item.term} style={{display:"flex",gap:12,marginBottom:18}}>
+                  <div style={{paddingTop:7,flexShrink:0}}>
+                    <div style={{width:5,height:5,borderRadius:"50%",background:"var(--fg)",opacity:0.3}}></div>
+                  </div>
+                  <div>
+                    <div style={{fontSize:16,fontWeight:700,color:"var(--fg)",letterSpacing:"-0.01em",marginBottom:3}}>{item.term}</div>
+                    <div style={{fontSize:16,color:"var(--dim)",lineHeight:1.72}}>{item.desc}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div style={{animation:"fadeUp 0.5s 0.16s ease both",marginBottom:52}}>
+            <p style={{fontSize:17,color:"var(--dim)",lineHeight:1.8}}>
+              plain-language description to stakeholder-ready word doc in under a minute. no interviews, no manual mapping, no waiting for the one person who knows how everything works.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  /* ─── CASE STUDY PAGE ──────────────────────────────────── */
+
+  function CaseStudyPage({T, setPage}) {
+    var [videoHov, setVideoHov] = React.useState(false);
+    var videoRef = React.useRef(null);
+    function handleVideoEnter() {
+      setVideoHov(true);
+      if (videoRef.current) videoRef.current.play();
+    }
+    function handleVideoLeave() {
+      setVideoHov(false);
+      if (videoRef.current) videoRef.current.pause();
+    }
+    return (
+      <div style={{minHeight:"100vh",paddingTop:62,background:"var(--bg)"}}>
+        <div style={{maxWidth:820,margin:"0 auto",padding:"60px 40px 120px"}}>
+
+          <div style={{marginBottom:44,animation:"fadeUp 0.45s ease both",display:"flex",alignItems:"flex-start",gap:0}}
+            onMouseEnter={handleVideoEnter} onMouseLeave={handleVideoLeave}>
+            <div style={{width:28,flexShrink:0,paddingTop:14}}>
+              <div style={{width:12,height:12,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:videoHov?1:0,transform:videoHov?"scale(1)":"scale(0.4)"}}/>
+            </div>
+            <div style={{flex:1,borderRadius:12,overflow:"hidden",boxShadow:"0 8px 40px rgba(0,0,0,0.25)"}}>
+              <video ref={videoRef} src="Screen Recording 2026 V2.mp4" muted playsInline style={{width:"100%",display:"block",aspectRatio:"16/9",background:"#0d0d0d",cursor:"pointer"}}/>
+            </div>
+          </div>
+
+          <div style={{marginBottom:32,animation:"fadeUp 0.5s 0.1s ease both"}}>
+            <p style={{fontSize:17,color:"var(--fg)",lineHeight:1.8,marginBottom:16}}>
+              marketing teams work in silos. research, strategy, campaign planning, and content creation happen sequentially. handoffs lose context, take days, and create misalignment between teams.
+            </p>
+            <p style={{fontSize:17,color:"var(--dim)",lineHeight:1.8}}>
+              a single marketing brief can take a week to move from objective to actionable plan. this changes that: objective to complete marketing brief in under two minutes.
+            </p>
+          </div>
+
+          <div style={{marginBottom:32,animation:"fadeUp 0.5s 0.12s ease both"}}>
+            <h2 style={{fontSize:22,fontWeight:700,letterSpacing:"-0.02em",color:"var(--fg)",marginBottom:20}}>how it works</h2>
+            {[
+              {term:"research agent", desc:"takes the raw marketing objective and produces market landscape analysis, competitor positioning, and audience signals."},
+              {term:"strategy agent", desc:"synthesizes research into a strategic framework: brand positioning, target audience, channel priorities, and success metrics."},
+              {term:"campaign agent", desc:"translates strategy into a structured campaign plan with phases, timeline, channel mix, and execution details."},
+              {term:"content agent", desc:"produces the messaging framework: core narrative, key messages, tone guidance, and sample creative assets."},
+            ].map(function(item) {
+              return (
+                <div key={item.term} style={{display:"flex",gap:12,marginBottom:18}}>
+                  <div style={{paddingTop:7,flexShrink:0}}>
+                    <div style={{width:5,height:5,borderRadius:"50%",background:"var(--fg)",opacity:0.3}}></div>
+                  </div>
+                  <div>
+                    <div style={{fontSize:16,fontWeight:700,color:"var(--fg)",letterSpacing:"-0.01em",marginBottom:3}}>{item.term}</div>
+                    <div style={{fontSize:16,color:"var(--dim)",lineHeight:1.72}}>{item.desc}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div style={{animation:"fadeUp 0.5s 0.16s ease both",marginBottom:52}}>
+            <p style={{fontSize:17,color:"var(--dim)",lineHeight:1.8}}>
+              after all four agents complete, the pipeline enters a human review stage. approve the brief or add feedback and iterate. the entire pipeline re-runs with your direction injected into each agent's context.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  /* ─── SHARED COMPONENTS ─────────────────────────────────── */
+
+  function Burst(props) {
+    var color = props.color, s = props.s || 14;
+    return (
+      <svg width={s} height={s} viewBox="0 0 20 20"
+        style={{display:"inline-block",verticalAlign:"middle",flexShrink:0}}>
+        <circle cx="10" cy="10" r="7" fill={color}/>
+      </svg>
+    );
+  }
+
+  function ElementIcon({name, color, size}) {
+    var s = size || 13;
+    if (name === "fire") return (
+      <svg width={s} height={s} viewBox="0 0 20 20" fill="none" style={{display:"inline-block",verticalAlign:"middle",flexShrink:0}}>
+        <circle cx="10" cy="10" r="9" stroke={color} strokeWidth="1.5"/>
+        <path d="M10 15c-2.5 0-4-1.5-4-3.5 0-1.5 1-2.5 2-3 0 1 .5 1.5 1.5 1.5C10.5 10 11 8 10 6c2 1 4 3 4 5.5 0 2-1.5 3.5-4 3.5z" fill={color}/>
+      </svg>
+    );
+    if (name === "water") return (
+      <svg width={s} height={s} viewBox="0 0 20 20" fill="none" style={{display:"inline-block",verticalAlign:"middle",flexShrink:0}}>
+        <circle cx="10" cy="10" r="9" stroke={color} strokeWidth="1.5"/>
+        <path d="M10 5c0 0-5 4.5-5 7a5 5 0 0010 0c0-2.5-5-7-5-7z" fill={color}/>
+        <ellipse cx="8" cy="11" rx="1" ry="1.5" fill="white" opacity="0.35" transform="rotate(-20 8 11)"/>
+      </svg>
+    );
+    if (name === "air") return (
+      <svg width={s} height={s} viewBox="0 0 20 20" fill="none" style={{display:"inline-block",verticalAlign:"middle",flexShrink:0}}>
+        <circle cx="10" cy="10" r="9" stroke={color} strokeWidth="1.5"/>
+        <path d="M10 14 C10 14 6 10 10 6 C14 10 10 14 10 14z" stroke={color} strokeWidth="1.2" fill="none"/>
+        <path d="M7 10 C7 10 10 7 13 10" stroke={color} strokeWidth="1.2" fill="none" strokeLinecap="round"/>
+      </svg>
+    );
+    if (name === "earth") return (
+      <svg width={s} height={s} viewBox="0 0 20 20" fill="none" style={{display:"inline-block",verticalAlign:"middle",flexShrink:0}}>
+        <circle cx="10" cy="10" r="9" stroke={color} strokeWidth="1.5"/>
+        <polyline points="5,13 8,8 11,11 14,7" stroke={color} strokeWidth="1.4" strokeLinejoin="round" strokeLinecap="round" fill="none"/>
+        <line x1="5" y1="14.5" x2="15" y2="14.5" stroke={color} strokeWidth="1.2" strokeLinecap="round"/>
+      </svg>
+    );
+    return null;
+  }
+
+  function AIWordmark(props) {
+    var dc=props.dotColor, sz=props.size||13, wt=props.weight||700;
+    var icon=props.elementIcon||"fire";
+    var isz=Math.round(sz*0.95);
+    return (
+      <div style={{fontSize:sz,fontWeight:wt,letterSpacing:"-0.02em",lineHeight:1.1,fontFamily:"inherit"}}>
+        <div>lauren</div>
+        <div>nowak</div>
+        <div style={{display:"flex",alignItems:"center",gap:4,marginTop:2}}>
+          <ElementIcon name={icon} color={dc} size={isz}/>
+          <span style={{color:dc,letterSpacing:"0.04em"}}>ai</span>
+          <ElementIcon name={icon} color={dc} size={isz}/>
+        </div>
+      </div>
+    );
+  }
+
+  function Nav({page, setPage, dotColor, elementIcon}) {
+    return (
+      <nav style={{
+        position:"fixed",top:0,left:0,right:0,zIndex:1000,
+        height:62,display:"flex",alignItems:"center",
+        justifyContent:"space-between",padding:"0 40px",
+        background:"var(--nav-bg)",
+        backdropFilter:"blur(14px)",
+        WebkitBackdropFilter:"blur(14px)",
+      }}>
+        <span onClick={()=>setPage("home")} style={{cursor:"pointer",lineHeight:1}}>
+          <AIWordmark dotColor={dotColor} size={18} weight={700} elementIcon={elementIcon}/>
+        </span>
+        <div style={{display:"flex",gap:26}}>
+          {[["builds","home"],["about","experience"],["videos","videos"],["resume","resume"],["writing","writing"]].map(([label,p])=>(
+            <span key={p} onClick={()=>setPage(p)} className={"nav-lnk"+(page===p?" on":"")}>{label}</span>
+          ))}
+        </div>
+      </nav>
+    );
+  }
+
+  /* ─── HOME ──────────────────────────────────────────────── */
+
+  function Home({T, setPage}) {
+    var [active, setActive] = useState(null);
+    var [previewY, setPreviewY] = useState(0);
+    var rightPanelRef = React.useRef(null);
+    return (
+      <div style={{display:"grid",gridTemplateColumns:"clamp(320px, 42%, 520px) 1fr",height:"100vh",paddingTop:62}}>
+
+        {/* LEFT */}
+        <div style={{overflowY:"auto",padding:"clamp(80px, 20vh, 200px) 40px 60px 80px",display:"flex",flexDirection:"column"}}>
+          <div style={{marginBottom:60,animation:"fadeIn 0.6s ease both",paddingLeft:22}}>
+            <div style={{fontSize:18,fontWeight:500,color:"var(--fg)",marginBottom:8,letterSpacing:"-0.02em"}}>hello, i'm lauren.</div>
+            <div style={{fontSize:15,color:"var(--dim)",lineHeight:1.72,maxWidth:280}}>
+              i'm a strategy-minded systems thinker building ai systems from the ground up.
+            </div>
+          </div>
+          <div>
+            {BUILDS.map((b,i)=>{
+              var isA = active&&active.id===b.id;
+              return (
+                <div key={b.id} className="build-row"
+                  style={{animation:"fadeIn 0.5s "+(0.08*i)+"s ease both",cursor:(b.caseStudy||b.opsAudit||b.brandCheck)?"pointer":"default"}}
+                  onMouseEnter={(e)=>{setActive(b);if(rightPanelRef.current){var ir=e.currentTarget.getBoundingClientRect();var pr=rightPanelRef.current.getBoundingClientRect();setPreviewY(ir.top-pr.top);}}} onMouseLeave={()=>setActive(null)}
+                  onClick={b.caseStudy ? ()=>setPage("caseStudy") : b.opsAudit ? ()=>setPage("opsAudit") : b.brandCheck ? ()=>setPage("brandCheck") : undefined}>
+                  <div style={{width:22,flexShrink:0,paddingTop:5}}>
+                    <div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:isA?1:0,transform:isA?"scale(1)":"scale(0.3)",marginTop:2}}/>
+                  </div>
+                  <div>
+                    <div style={{fontSize:19,fontWeight:400,color:"var(--fg)",letterSpacing:"-0.02em",lineHeight:1.4}}>{b.title}</div>
+                    <div style={{fontSize:14,color:"var(--dim)",marginTop:4,lineHeight:1.5}}>{b.sub}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          {(()=>{
+            var [hovAbout,setHovAbout] = React.useState(false);
+            return (
+              <div style={{marginTop:"auto",paddingTop:20,cursor:"pointer",display:"flex",alignItems:"center"}}
+                onMouseEnter={()=>setHovAbout(true)}
+                onMouseLeave={()=>setHovAbout(false)}
+                onClick={()=>setPage("experience")}>
+                <div style={{width:22,flexShrink:0}}>
+                  <div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:hovAbout?1:0,transform:hovAbout?"scale(1)":"scale(0.3)"}}/>
+                </div>
+                <span style={{fontSize:19,fontWeight:400,color:"var(--fg)",letterSpacing:"-0.02em"}}>about</span>
+              </div>
+            );
+          })()}
+        </div>
+
+        {/* RIGHT */}
+        <div ref={rightPanelRef} style={{position:"relative",overflow:"hidden"}}>
+          {active ? (
+            <div style={{position:"absolute",top:Math.max(20,previewY),left:20,right:20}}>
+            {(function() {
+              if (active.brandCheck) return (
+                <div key={active.id} style={{width:"100%",animation:"slideIn 0.22s ease both",cursor:"pointer",borderRadius:12,overflow:"hidden",boxShadow:"0 8px 40px rgba(0,0,0,0.4)"}} onClick={()=>setPage("brandCheck")}>
+                  <video src="Brandcheck.mp4" autoPlay muted loop playsInline style={{width:"100%",display:"block",aspectRatio:"16/9",objectFit:"cover"}}/>
+                </div>
+              );
+              if (active.opsAudit) return (
+                <div key={active.id} style={{width:"100%",animation:"slideIn 0.22s ease both",cursor:"pointer",borderRadius:12,overflow:"hidden",boxShadow:"0 8px 40px rgba(0,0,0,0.4)"}} onClick={()=>setPage("opsAudit")}>
+                  <video src="marketing ops audit 2.mp4" autoPlay muted loop playsInline style={{width:"100%",display:"block",aspectRatio:"16/9",objectFit:"cover"}}/>
+                </div>
+              );
+              if (active.caseStudy) return (
+                <div key={active.id} style={{width:"100%",animation:"slideIn 0.22s ease both",cursor:"pointer",borderRadius:12,overflow:"hidden",boxShadow:"0 8px 40px rgba(0,0,0,0.4)"}} onClick={()=>setPage("caseStudy")}>
+                  <video src="Screen Recording 2026 V2.mp4" autoPlay muted loop playsInline style={{width:"100%",display:"block",aspectRatio:"16/9",objectFit:"cover"}}/>
+                </div>
+              );
+              return (
+                <div className="preview-card" key={active.id}>
+                  <div style={{height:220,background:active.color,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:10}}>
+                    <div style={{fontSize:36}}>{active.icon}</div>
+                    <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:"#333",opacity:0.35,letterSpacing:"0.1em"}}>{active.tag.toUpperCase()}</div>
+                  </div>
+                  <div style={{padding:"18px 22px",background:"var(--card-bg)"}}>
+                    <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
+                      <div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,flexShrink:0}}/>
+                      <span style={{fontSize:14,fontWeight:600,color:"var(--fg)",letterSpacing:"-0.015em"}}>{active.title}</span>
+                      <span style={{fontSize:10,color:T.dotColor,marginLeft:"auto",fontWeight:700,letterSpacing:"0.06em"}}>{active.tag.toUpperCase()}</span>
+                    </div>
+                    <div style={{fontSize:13,color:"var(--dim)",lineHeight:1.72}}>{active.desc}</div>
+                  </div>
+                </div>
+              );
+            })()}
+            </div>
+          ) : (
+            <div style={{position:"absolute",top:"50%",left:0,right:0,transform:"translateY(-50%)",display:"flex",alignItems:"center",justifyContent:"center",opacity:0.15,flexDirection:"column",gap:10}}>
+              <div style={{width:7,height:7,borderRadius:"50%",background:"var(--fg)"}}/>
+              <div style={{fontSize:10,letterSpacing:"0.1em",textTransform:"uppercase",color:"var(--fg)",fontFamily:"'DM Mono',monospace"}}>hover a build</div>
+            </div>
+          )}
+        </div>
+
+      </div>
+    );
+  }
+
+  /* ─── ABOUT ─────────────────────────────────────────────── */
+
+  function ExperiencePage({T}) {
+    return (
+      <div style={{minHeight:"100vh",paddingTop:62}}>
+        <div style={{maxWidth:480,margin:"0 auto",padding:"60px 40px 100px"}}>
+
+          {/* Photo */}
+          <div style={{animation:"fadeUp 0.5s ease both",marginBottom:44}}>
+            <div style={{width:"100%",aspectRatio:"4/3",borderRadius:6,overflow:"hidden"}}>
+              <img src="lauren_photo.jpg" alt="Lauren Nowak" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 15%",display:"block"}}/>
+            </div>
+          </div>
+
+          {/* Bio paragraphs */}
+          <div style={{animation:"fadeUp 0.5s ease both",marginBottom:48}}>
+            {[
+              "hello, i'm lauren nowak. i grew up in chicago, but san francisco, hawaii, and tel aviv have shaped who i am.",
+              "i'm a marketing strategist building ai systems from the ground up.",
+              "i started in nonprofit, moved through agency work, and found my way to block, a fortune 500 company. a trajectory i'm deeply proud of.",
+              "i was quoted in openai's article on improvements to data analysis in chatgpt, on how ai makes data analysis more accessible for everyday professionals.",
+              "i believe the future of marketing is engineering: designing workflows that scale thinking, not just execution.",
+              "i love when things in life come together and become something more profound than we ever expected it to be.",
+            ].map(function(para, i) {
+              return (
+                <p key={i} style={{fontSize:15,color:"var(--fg)",lineHeight:1.8,marginBottom:20}}>{para}</p>
+              );
+            })}
+          </div>
+
+          {/* Contact links */}
+          <div style={{animation:"fadeUp 0.5s 0.1s ease both",marginBottom:200}}>
+            {[
+              {label:"lauren.nowak@icloud.com", href:"mailto:lauren.nowak@icloud.com"},
+              {label:"linkedin", href:"https://www.linkedin.com/in/laurenashleynowak", target:"_blank"},
+            ].map(function(link) {
+              var [hov,setHov] = React.useState(false);
+              return (
+                <div key={link.label} style={{marginBottom:2,position:"relative",display:"block"}}
+                  onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}>
+                  <div style={{position:"absolute",left:-18,top:"50%",transform:"translateY(-50%)",width:7,height:7,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:hov?1:0,transform:hov?"translateY(-50%) scale(1)":"translateY(-50%) scale(0.3)"}}/>
+                  <a href={link.href} target={link.target||"_self"}
+                    style={{fontSize:15,color:"var(--fg)",textDecoration:"none",letterSpacing:"-0.01em"}}>
+                    {link.label}
+                  </a>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Experience */}
+          <div style={{animation:"fadeUp 0.5s 0.18s ease both"}}>
+            <div style={{display:"grid",gridTemplateColumns:"24px 80px 1fr",gap:"0 20px",marginBottom:20}}>
+              <div/><div/>
+              <div style={{fontSize:15,color:"var(--fg)",fontWeight:500,paddingBottom:16}}>experience</div>
+            </div>
+            {CAREER.map((c,i)=>{
+              var [hov,setHov] = React.useState(false);
+              return (
+                <div key={i} className="exp-row" onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}>
+                  <div style={{paddingTop:5}}>
+                    <div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.15s,transform 0.15s",opacity:hov?1:0,transform:hov?"scale(1)":"scale(0.3)"}}/>
+                  </div>
+                  <div style={{fontSize:12,color:"var(--dim)",paddingTop:2}}>{c.year}</div>
+                  <div>
+                    <a href={c.url} target="_blank" style={{fontSize:12,color:"var(--dim)",marginBottom:3,display:"block",textDecoration:"none"}}>{c.co}</a>
+                    <div style={{fontSize:15,fontWeight:600,color:"var(--fg)",letterSpacing:"-0.02em",lineHeight:1.3}}>{c.role}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+  /* ─── VIDEOS ────────────────────────────────────────────── */
+
+  function VideoCard({v, T, i}) {
+    var [hov,setHov] = React.useState(false);
+    return (
+      <div className="vcard" onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+        style={{transform:hov?"translateY(-2px)":"none",transition:"transform 0.18s",animation:"fadeUp 0.5s "+(0.04*i)+"s ease both",cursor:"default"}}>
+        <a href={v.linkedInUrl} target="_blank" style={{display:"block",borderRadius:8,overflow:"hidden",cursor:"pointer"}}>
+          <video src={v.videoSrc} autoPlay muted loop playsInline style={{width:"100%",display:"block",aspectRatio:"9/16",objectFit:"cover"}}/>
+        </a>
+        <div style={{paddingTop:10}}>
+          <div style={{fontSize:10,color:T.dotColor,fontWeight:700,letterSpacing:"0.04em",marginBottom:3}}>{v.series}</div>
+          {v.title && <div style={{fontSize:13,fontWeight:600,color:"var(--fg)",lineHeight:1.35,letterSpacing:"-0.01em"}}>{v.title}</div>}
+        </div>
+      </div>
+    );
+  }
+
+  function VideosPage({T, setPage}) {
+    return (
+      <div style={{minHeight:"100vh",paddingTop:62}}>
+        <div style={{maxWidth:1020,margin:"0 auto",padding:"60px 40px 100px"}}>
+          <div style={{marginBottom:44,animation:"fadeUp 0.5s ease both"}}>
+            <p style={{fontSize:"clamp(22px,3vw,38px)",fontWeight:700,letterSpacing:"-0.03em",color:"var(--fg)",lineHeight:1.22,maxWidth:500,marginBottom:16}}>
+              i love making short videos to teach others about ai terms, papers, and tools.
+            </p>
+            <a href="https://www.linkedin.com/in/laurenashleynowak" target="_blank" style={{fontSize:13,color:T.dotColor,fontWeight:500,textDecoration:"none"}}>all videos on linkedin →</a>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20,animation:"fadeUp 0.5s 0.08s ease both"}}>
+            {VIDEOS.map((v,i)=><VideoCard key={v.id} v={v} T={T} i={i}/>)}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  /* ─── RESUME ────────────────────────────────────────────── */
+
+  function ResumePage({T}) {
+    return (
+      <div style={{minHeight:"100vh",paddingTop:62,background:"var(--bg)"}}>
+        <div style={{maxWidth:740,margin:"0 auto",padding:"60px 40px 100px"}}>
+
+          {/* Header */}
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:64,animation:"fadeUp 0.5s ease both"}}>
+            <div>
+              <h1 style={{fontSize:"clamp(22px,3vw,32px)",fontWeight:700,letterSpacing:"-0.03em",color:"var(--fg)",marginBottom:6}}>lauren nowak</h1>
+              <div style={{fontSize:13,color:"var(--dim)",lineHeight:1.65,maxWidth:400}}>
+                strategy-minded systems thinker applying frontier ai tools to reshape knowledge work and operational infrastructure.
+              </div>
+            </div>
+            <a href="Lauren Nowak AI Resume PDF.pdf" target="_blank" rel="noopener noreferrer" style={{
+              display:"inline-flex", alignItems:"center", gap:7,
+              fontSize:11, fontWeight:600, letterSpacing:"0.02em",
+              color:"var(--bg)", background:T.dotColor,
+              padding:"9px 16px", borderRadius:6,
+              textDecoration:"none", flexShrink:0, marginTop:4,
+              transition:"opacity 0.15s",
+            }}
+            onMouseEnter={e=>e.currentTarget.style.opacity="0.85"}
+            onMouseLeave={e=>e.currentTarget.style.opacity="1"}>
+              <svg width="11" height="11" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v8M3.5 6l3 3 3-3M1.5 11h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+              download pdf
+            </a>
+          </div>
+
+          {/* Experience */}
+          <div style={{marginBottom:60,animation:"fadeUp 0.5s 0.06s ease both"}}>
+            <div style={{fontSize:13,color:"var(--fg)",letterSpacing:"-0.01em",fontWeight:500,marginBottom:28}}>experience</div>
+
+            {RESUME_EXP.map((r,i)=>{
+              var [hov,setHov] = React.useState(false);
+              return (
+                <div key={i}
+                  style={{display:"grid",gridTemplateColumns:"22px 140px 1fr",gap:"0 20px",paddingBottom:36,marginBottom:36,animation:"fadeUp 0.5s "+(0.05+0.06*i)+"s ease both"}}
+                  onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}>
+                  {/* Dot */}
+                  <div style={{paddingTop:4}}>
+                    <div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:hov?1:0,transform:hov?"scale(1)":"scale(0.3)"}}/>
+                  </div>
+                  {/* Left col: date + company */}
+                  <div style={{paddingTop:2}}>
+                    <div style={{fontSize:12,color:"var(--dim)",lineHeight:1.6,marginBottom:4,fontVariantNumeric:"tabular-nums"}}>{r.period}</div>
+                  <div style={{fontSize:13,color:"var(--fg)",fontWeight:500,lineHeight:1.4}}>
+                    {r.coUrl ? <a href={r.coUrl} target="_blank" style={{color:"var(--fg)",textDecoration:"none"}} >{r.co}</a> : r.co}
+                  </div>
+                    {r.coParent && <div style={{fontSize:11,color:"var(--dimmer)",marginTop:2}}>{r.coParent}</div>}
+                  </div>
+                  {/* Right col: role + description */}
+                  <div>
+                    <div style={{fontSize:15,fontWeight:600,color:"var(--fg)",letterSpacing:"-0.02em",lineHeight:1.3,marginBottom:10}}>{r.role}</div>
+                    <div style={{fontSize:13,color:"var(--dim)",lineHeight:1.78}}>{r.desc}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Recognition */}
+          <div style={{marginBottom:60,animation:"fadeUp 0.5s 0.3s ease both"}}>
+            <div style={{fontSize:13,color:"var(--fg)",letterSpacing:"-0.01em",fontWeight:500,marginBottom:28}}>recognition</div>
+            {(()=>{ var [hov,setHov]=React.useState(false); return (
+              <a href="https://openai.com/index/improvements-to-data-analysis-in-chatgpt/" target="_blank"
+                style={{display:"grid",gridTemplateColumns:"22px 140px 1fr",gap:"0 20px",textDecoration:"none"}}
+                onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}>
+                <div style={{paddingTop:4}}><div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:hov?1:0,transform:hov?"scale(1)":"scale(0.3)"}}/></div>
+                <div style={{fontSize:12,color:"var(--dim)",paddingTop:2}}>2024</div>
+                <div style={{fontSize:13,color:"var(--dim)",lineHeight:1.78}}>
+                  <div style={{fontSize:14,fontWeight:600,color:"var(--fg)",letterSpacing:"-0.01em",marginBottom:6}}>improvements to data analysis in chatgpt</div>
+                  quoted in openai's article contributing insights on how ai makes data analysis more accessible for professionals.
+                </div>
+              </a>
+            ); })()}
+          </div>
+
+          {/* Skills */}
+          <div style={{marginBottom:60,animation:"fadeUp 0.5s 0.34s ease both"}}>
+            <div style={{fontSize:13,color:"var(--fg)",letterSpacing:"-0.01em",fontWeight:500,marginBottom:28}}>skills</div>
+            {[
+              {label:"ai tools",val:"claude · chatgpt · gemini · prompt systems · ai-assisted research · workflow automation · mcp extensions · goose · agentic interfaces"},
+              {label:"strategic",val:"ai integration · cross-functional strategy · workflow automation · systems thinking"},
+              {label:"technical",val:"data analysis (ga, tableau) · html/css · notion · asana · crm platforms · email marketing"},
+            ].map(function(s, i){
+              return (
+                <div key={s.label} style={{display:"grid",gridTemplateColumns:"22px 140px 1fr",gap:"0 20px",marginBottom:24}}>
+                  <div/>
+                  <div style={{fontSize:12,color:"var(--dim)",paddingTop:2}}>{i===0 ? "areas of expertise" : ""}</div>
+                  <div>
+                    <div style={{fontSize:14,fontWeight:600,color:"var(--fg)",letterSpacing:"-0.01em",marginBottom:5}}>{s.label}</div>
+                    <div style={{fontSize:13,color:"var(--dim)",lineHeight:1.78}}>{s.val}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Education */}
+          <div style={{animation:"fadeUp 0.5s 0.38s ease both"}}>
+            <div style={{fontSize:13,color:"var(--fg)",letterSpacing:"-0.01em",fontWeight:500,marginBottom:28}}>education</div>
+            {(()=>{ var [hov,setHov]=React.useState(false); return (
+              <div style={{display:"grid",gridTemplateColumns:"22px 140px 1fr",gap:"0 20px"}}
+                onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}>
+                <div style={{paddingTop:4}}><div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:hov?1:0,transform:hov?"scale(1)":"scale(0.3)"}}/></div>
+                <div style={{fontSize:12,color:"var(--dim)",paddingTop:2}}></div>
+                <div>
+                  <div style={{fontSize:14,fontWeight:600,color:"var(--fg)",letterSpacing:"-0.01em",marginBottom:3}}>
+                    <a href="https://luc.edu" target="_blank" style={{color:"var(--fg)",textDecoration:"none"}} >loyola university chicago</a>
+                  </div>
+                  <div style={{fontSize:13,color:"var(--dim)"}}>ba, advertising & public relations</div>
+                  <div style={{fontSize:12,color:"var(--dimmer)",marginTop:3}}>community engagement impact award honoree</div>
+                </div>
+              </div>
+            ); })()}
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  /* ─── WRITING ───────────────────────────────────────────── */
+
+  function WritingPage({T, setPage}) {
+    return (
+      <div style={{minHeight:"100vh",paddingTop:62}}>
+        <div style={{maxWidth:640,margin:"0 auto",padding:"60px 40px 100px"}}>
+          <div style={{marginBottom:48,animation:"fadeUp 0.5s ease both"}}>
+            <h1 style={{fontSize:"clamp(26px,4vw,44px)",fontWeight:700,letterSpacing:"-0.03em",color:"var(--fg)",marginBottom:16}}>writing</h1>
+            <p style={{fontSize:15,color:"var(--dim)",lineHeight:1.8,maxWidth:440}}>i care deeply about people, technology, and products. i write about what i'm building and what i'm learning.</p>
+          </div>
+          <div>
+            {WRITING.map((w,i)=>{
+              var [hov,setHov] = React.useState(false);
+              return (
+                <div key={w.id} className="wrow"
+                  onClick={()=>setPage("article_"+w.id)}
+                  onMouseEnter={()=>setHov(true)}
+                  onMouseLeave={()=>setHov(false)}
+                  style={{animation:"fadeUp 0.5s "+(0.07*i)+"s ease both",cursor:"pointer"}}>
+                  <div style={{display:"flex",alignItems:"center",gap:0}}>
+                    <div style={{width:22,flexShrink:0}}>
+                      <div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:hov?1:0,transform:hov?"scale(1)":"scale(0.3)"}}></div>
+                    </div>
+                    <div>
+                      <div style={{fontSize:"clamp(15px,1.8vw,19px)",fontWeight:600,color:"var(--fg)",letterSpacing:"-0.02em",lineHeight:1.3,marginBottom:5}}>{w.title}</div>
+                      <div style={{fontSize:12,color:"var(--dim)"}}>{w.min} min read</div>
+                    </div>
+                  </div>
+                  <div style={{display:"flex",gap:16,alignItems:"baseline",marginLeft:24,flexShrink:0}}>
+                    <span style={{fontSize:14,color:T.dotColor,fontWeight:500}}>&#8594;</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  /* ─── TWEAKS ────────────────────────────────────────────── */
+
+  function TweaksPanel({T, setT, show}) {
+    if (!show) return null;
+    function set(k,v) {
+      var next = Object.assign({},T,[k]=v,T); next[k]=v;
+      setT(next);
+      if(k==="dotColor") document.documentElement.style.setProperty("--dot",v);      if(k==="darkMode") {
+        document.documentElement.classList[v?"add":"remove"]("dark");
+      }
+      window.parent.postMessage({type:"__edit_mode_set_keys",edits:next},"*");
+    }
+    var DOTS = ["#2563EB","#7C3AED","#059669","#DC2626","#EA580C"];
+    return (
+      <div className="tweaks-panel">
+        <div style={{fontSize:11,fontWeight:700,letterSpacing:"0.1em",textTransform:"uppercase",opacity:0.4,marginBottom:14}}>Tweaks</div>
+        <div style={{marginBottom:16}}>
+          <div style={{fontSize:11,opacity:0.5,marginBottom:9}}>element icon</div>
+          <div style={{display:"flex",gap:8}}>
+            {["fire","water","air","earth"].map(e=>(
+              <div key={e} onClick={()=>set("elementIcon",e)}
+                style={{cursor:"pointer",opacity:T.elementIcon===e?1:0.35,transition:"opacity 0.15s",fontSize:9,textAlign:"center"}}>
+                <ElementIcon name={e} color={T.dotColor} size={22}/>
+                <div style={{marginTop:3,letterSpacing:"0.05em"}}>{e}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{marginBottom:16}}>
+          <div style={{fontSize:11,opacity:0.5,marginBottom:9}}>dot color</div>
+          <div style={{display:"flex",gap:8}}>
+            {DOTS.map(c=>(
+              <div key={c} style={{width:20,height:20,borderRadius:"50%",background:c,cursor:"pointer",outline:T.dotColor===c?"2px solid #fff":"none",outlineOffset:2}} onClick={()=>set("dotColor",c)}/>
+            ))}
+          </div>
+        </div>
+        <div>
+          <div style={{fontSize:11,opacity:0.5,marginBottom:9}}>dark mode</div>
+          <div style={{width:40,height:22,borderRadius:11,background:T.darkMode?T.dotColor:"#444",cursor:"pointer",position:"relative",transition:"background 0.2s"}} onClick={()=>set("darkMode",!T.darkMode)}>
+            <div style={{position:"absolute",top:3,left:T.darkMode?21:3,width:16,height:16,borderRadius:"50%",background:"#fff",transition:"left 0.2s"}}/>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  /* ─── APP ───────────────────────────────────────────────── */
+
+  function App() {
+    var [page,   setPage]      = useState("home");
+    var [T,      setT]         = useState(TWEAK_DEFAULTS);
+    var [showTw, setShowTw]    = useState(false);
+
+    useEffect(()=>{ document.documentElement.style.setProperty("--dot", T.dotColor); }, [T.dotColor]);
+    useEffect(()=>{
+      document.documentElement.classList[T.darkMode?"add":"remove"]("dark");
+    }, [T.darkMode]);
+
+    useEffect(()=>{
+      function onMsg(e) {
+        if(e.data&&e.data.type==="__activate_edit_mode")   setShowTw(true);
+        if(e.data&&e.data.type==="__deactivate_edit_mode") setShowTw(false);
+      }
+      window.addEventListener("message",onMsg);
+      window.parent.postMessage({type:"__edit_mode_available"},"*");
+      return ()=>window.removeEventListener("message",onMsg);
+    },[]);
+
+    useEffect(()=>{
+      page==="home" ? document.body.classList.remove("scrollable") : document.body.classList.add("scrollable");
+    },[page]);
+
+    return (
+      <div style={{background:"var(--bg)",color:"var(--fg)",minHeight:"100vh"}}>
+        <Nav page={page} setPage={setPage} dotColor={T.dotColor} elementIcon={T.elementIcon}/>
+        {page==="home"       && <Home T={T} setPage={setPage}/>}
+        {page==="experience" && <ExperiencePage T={T}/>}
+        {page==="videos"     && <VideosPage T={T} setPage={setPage}/>}
+        {page==="resume"     && <ResumePage T={T}/>}
+        {page==="writing"    && <WritingPage T={T} setPage={setPage}/>}
+        {page==="caseStudy"  && <CaseStudyPage T={T} setPage={setPage}/>}
+        {page==="opsAudit"   && <OpsAuditPage T={T} setPage={setPage}/>}
+        {page==="brandCheck" && <BrandCheckPage T={T} setPage={setPage}/>}
+        {page==="article_1"  && <ArticlePage T={T} setPage={setPage} articleId={1}/>}
+        {page==="article_2"  && <ArticlePage T={T} setPage={setPage} articleId={2}/>}
+        {page==="article_3"  && <ArticlePage T={T} setPage={setPage} articleId={3}/>}
+        <TweaksPanel T={T} setT={setT} show={showTw}/>
+      </div>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
