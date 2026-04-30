@@ -793,9 +793,10 @@
     React.useEffect(function() {
       var el = videoRef.current;
       if (!el) return;
+      var rootMargin = window.innerWidth <= 768 ? "0px 0px 1200px 0px" : "0px 0px 400px 0px";
       var obs = new IntersectionObserver(function(entries) {
         if (entries[0].isIntersecting && !el.src) { el.src = v.videoSrc; el.play().catch(function(){}); }
-      }, { rootMargin: "0px 0px 400px 0px" });
+      }, { rootMargin: rootMargin });
       obs.observe(el);
       return function() { obs.disconnect(); };
     }, [v.videoSrc]);
