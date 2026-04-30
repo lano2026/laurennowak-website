@@ -86,7 +86,7 @@
 
     .build-row { display: flex; align-items: flex-start; padding: 20px 0; cursor: default; }
     .exp-row   { display: grid; grid-template-columns: 24px 80px 1fr; gap: 0 20px; padding: 18px 0; align-items: start; }
-    .wrow      { transition: opacity 0.15s; cursor: pointer; padding: 20px 0; display: flex; justify-content: space-between; align-items: baseline; }
+    .wrow      { transition: opacity 0.15s; cursor: pointer; padding: 10px 0; display: flex; justify-content: space-between; align-items: baseline; }
     .wrow:hover { opacity: 0.42; }
 
     .vcard { cursor: pointer; break-inside: avoid; margin-bottom: 18px; }
@@ -1017,7 +1017,7 @@
                       <div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:hov?1:0,transform:hov?"scale(1)":"scale(0.3)"}}></div>
                     </div>
                     <div>
-                      <div style={{fontSize:"clamp(15px,1.8vw,19px)",fontWeight:600,color:"var(--fg)",letterSpacing:"-0.02em",lineHeight:1.3,marginBottom:5}}>{w.title}</div>
+                      <div style={{fontSize:15,fontWeight:400,color:"var(--fg)",lineHeight:1.8}}>{w.title}</div>
                     </div>
                   </div>
                   <div style={{display:"flex",gap:16,alignItems:"baseline",marginLeft:24,flexShrink:0}}>
