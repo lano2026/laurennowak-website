@@ -794,8 +794,8 @@
       var el = videoRef.current;
       if (!el) return;
       var isMobile = window.innerWidth <= 768;
-      var rootMargin = isMobile ? "0px 0px 1200px 0px" : "0px 0px 400px 0px";
-      var loadDelay = !isMobile && i >= 2 ? 1000 : 0;
+      var rootMargin = isMobile ? "0px 0px 1200px 0px" : "0px 0px 800px 0px";
+      var loadDelay = isMobile ? 0 : ([0, 0, 800, 1600, 0, 0][i] || 0);
       var timer;
       function startVideo() {
         if (el.src) return;
