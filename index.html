@@ -87,6 +87,16 @@
     .preview-card { border-radius: 12px; overflow: hidden; box-shadow: 0 2px 40px rgba(0,0,0,0.07); border: 1px solid var(--border); background: var(--card-bg); max-width: 540px; width: 100%; animation: slideIn 0.22s ease both; }
 
     .tweaks-panel { position: fixed; bottom: 22px; right: 22px; background: #111; color: #fff; border-radius: 12px; padding: 18px 20px; width: 212px; z-index: 9999; box-shadow: 0 8px 40px rgba(0,0,0,0.22); animation: fadeIn 0.2s ease; }
+
+    @media (max-width: 768px) {
+      .home-grid { grid-template-columns: 1fr !important; height: auto !important; }
+      .home-right { display: none !important; }
+      .home-left { padding: 80px 28px 60px 28px !important; }
+      .videos-grid { grid-template-columns: 1fr !important; }
+      nav { padding: 0 20px !important; }
+      nav > div { gap: 12px !important; }
+      .nav-lnk { font-size: 11px !important; }
+    }
   </style>
 </head>
 <body>
@@ -597,10 +607,10 @@
       });
     }, [active]);
     return (
-      <div style={{display:"grid",gridTemplateColumns:"clamp(320px, 42%, 520px) 1fr",height:"100vh",paddingTop:62}}>
+      <div className="home-grid" style={{display:"grid",gridTemplateColumns:"clamp(320px, 42%, 520px) 1fr",height:"100vh",paddingTop:62}}>
 
         {/* LEFT */}
-        <div style={{overflowY:"auto",padding:"clamp(80px, 20vh, 200px) 40px 60px 80px",display:"flex",flexDirection:"column"}}>
+        <div className="home-left" style={{overflowY:"auto",padding:"clamp(80px, 20vh, 200px) 40px 60px 80px",display:"flex",flexDirection:"column"}}>
           <div style={{marginBottom:60,animation:"fadeIn 0.6s ease both",paddingLeft:22}}>
             <div style={{fontSize:18,fontWeight:500,color:"var(--fg)",marginBottom:8,letterSpacing:"-0.02em"}}>hello, i'm lauren.</div>
             <div style={{fontSize:15,color:"var(--dim)",lineHeight:1.72,maxWidth:280}}>
@@ -643,7 +653,7 @@
         </div>
 
         {/* RIGHT */}
-        <div ref={rightPanelRef} style={{position:"relative",overflow:"hidden"}}>
+        <div className="home-right" ref={rightPanelRef} style={{position:"relative",overflow:"hidden"}}>
 
           {/* Video previews always in DOM — opacity toggle means no load delay on hover */}
           {[
@@ -813,7 +823,7 @@
             </p>
             <a href="https://www.linkedin.com/in/laurenashleynowak" target="_blank" style={{fontSize:13,color:T.dotColor,fontWeight:500,textDecoration:"none"}}>all videos on linkedin →</a>
           </div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20,animation:"fadeUp 0.5s 0.08s ease both"}}>
+          <div className="videos-grid" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20,animation:"fadeUp 0.5s 0.08s ease both"}}>
             {VIDEOS.map((v,i)=><VideoCard key={v.id} v={v} T={T} i={i}/>)}
           </div>
         </div>
