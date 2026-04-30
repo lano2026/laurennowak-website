@@ -608,7 +608,7 @@
           <AIWordmark dotColor={dotColor} size={18} weight={700} elementIcon={elementIcon}/>
         </span>
         <div style={{display:"flex",gap:26}}>
-          {[["builds","home"],["about","experience"],["videos","videos"],["resume","resume"],["writing","writing"]].map(([label,p])=>(
+          {[["builds","home"],["about","experience"],["resume","resume"],["videos","videos"],["writing","writing"]].map(([label,p])=>(
             <span key={p} onClick={()=>setPage(p)} className={"nav-lnk"+(page===p?" on":"")}>{label}</span>
           ))}
         </div>
