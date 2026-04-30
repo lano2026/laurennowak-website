@@ -259,6 +259,9 @@
     function openModal() { setExpanded(true); if (videoRef.current) videoRef.current.pause(); }
     function closeModal() { setExpanded(false); if (modalVideoRef.current) modalVideoRef.current.pause(); }
     React.useEffect(function() {
+      if (window.matchMedia("(hover: none)").matches && videoRef.current) videoRef.current.play();
+    }, []);
+    React.useEffect(function() {
       if (!expanded) return;
       if (modalVideoRef.current) modalVideoRef.current.play();
       function onKey(e) { if (e.key === "Escape") closeModal(); }
@@ -341,6 +344,9 @@
     function handleVideoLeave() { setVideoHov(false); if (videoRef.current) videoRef.current.pause(); }
     function openModal() { setExpanded(true); if (videoRef.current) videoRef.current.pause(); }
     function closeModal() { setExpanded(false); if (modalVideoRef.current) modalVideoRef.current.pause(); }
+    React.useEffect(function() {
+      if (window.matchMedia("(hover: none)").matches && videoRef.current) videoRef.current.play();
+    }, []);
     React.useEffect(function() {
       if (!expanded) return;
       if (modalVideoRef.current) modalVideoRef.current.play();
@@ -436,6 +442,9 @@
       setExpanded(false);
       if (modalVideoRef.current) modalVideoRef.current.pause();
     }
+    React.useEffect(function() {
+      if (window.matchMedia("(hover: none)").matches && videoRef.current) videoRef.current.play();
+    }, []);
     React.useEffect(function() {
       if (!expanded) return;
       if (modalVideoRef.current) modalVideoRef.current.play();
