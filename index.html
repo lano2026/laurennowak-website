@@ -793,13 +793,26 @@
     React.useEffect(function() {
       var el = videoRef.current;
       if (!el) return;
-      var rootMargin = window.innerWidth <= 768 ? "0px 0px 1200px 0px" : "0px 0px 400px 0px";
+      var isMobile = window.innerWidth <= 768;
+      var rootMargin = isMobile ? "0px 0px 1200px 0px" : "0px 0px 400px 0px";
+      var loadDelay = !isMobile && i >= 2 ? 1000 : 0;
+      var timer;
+      function startVideo() {
+        if (el.src) return;
+        el.src = v.videoSrc;
+        el.play().catch(function() {
+          el.addEventListener('canplay', function() { el.play().catch(function(){}); }, { once: true });
+        });
+      }
       var obs = new IntersectionObserver(function(entries) {
-        if (entries[0].isIntersecting && !el.src) { el.src = v.videoSrc; el.play().catch(function(){}); }
+        if (entries[0].isIntersecting && !el.src) {
+          obs.disconnect();
+          if (loadDelay) { timer = setTimeout(startVideo, loadDelay); } else { startVideo(); }
+        }
       }, { rootMargin: rootMargin });
       obs.observe(el);
-      return function() { obs.disconnect(); };
-    }, [v.videoSrc]);
+      return function() { obs.disconnect(); clearTimeout(timer); };
+    }, [v.videoSrc, i]);
     return (
       <div className="vcard" onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
         style={{transform:hov?"translateY(-2px)":"none",transition:"transform 0.18s",animation:"fadeUp 0.5s "+(0.04*i)+"s ease both",cursor:"default"}}>
