@@ -90,11 +90,21 @@
     .rrow      { display: grid; grid-template-columns: 22px 140px 1fr; gap: 0 20px; padding-bottom: 36px; margin-bottom: 36px; }
     .rrow-dot  { padding-top: 4px; }
     .rrow-meta { padding-top: 2px; }
+    .recog-row  { display: grid; grid-template-columns: 22px 140px 1fr; gap: 0 20px; text-decoration: none; }
+    .skill-row  { display: grid; grid-template-columns: 22px 140px 1fr; gap: 0 20px; margin-bottom: 24px; }
+    .edu-row    { display: grid; grid-template-columns: 22px 140px 1fr; gap: 0 20px; }
     @media (max-width: 620px) {
       .rrow      { display: block; padding-bottom: 24px; margin-bottom: 24px; }
       .rrow-dot  { display: none; }
       .rrow-meta { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
       .rrow-parent { display: none; }
+      .recog-row  { display: block; }
+      .recog-dot  { display: none; }
+      .skill-row  { display: block; margin-bottom: 20px; }
+      .skill-spacer, .skill-label-col { display: none; }
+      .edu-row    { display: block; }
+      .edu-dot    { display: none; }
+      .edu-spacer { display: none; }
     }
     .wrow:hover { opacity: 0.42; }
 
@@ -946,9 +956,10 @@
             <div style={{fontSize:13,color:"var(--fg)",letterSpacing:"-0.01em",fontWeight:500,marginBottom:28}}>recognition</div>
             {(()=>{ var [hov,setHov]=React.useState(false); return (
               <a href="https://openai.com/index/improvements-to-data-analysis-in-chatgpt/" target="_blank"
-                style={{display:"grid",gridTemplateColumns:"22px 140px 1fr",gap:"0 20px",textDecoration:"none"}}
+                className="recog-row"
+                style={{textDecoration:"none"}}
                 onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}>
-                <div style={{paddingTop:4}}><div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:hov?1:0,transform:hov?"scale(1)":"scale(0.3)"}}/></div>
+                <div className="recog-dot" style={{paddingTop:4}}><div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:hov?1:0,transform:hov?"scale(1)":"scale(0.3)"}}/></div>
                 <div style={{fontSize:12,color:"var(--dim)",paddingTop:2}}>2024</div>
                 <div style={{fontSize:13,color:"var(--dim)",lineHeight:1.78}}>
                   <div style={{fontSize:14,fontWeight:600,color:"var(--fg)",letterSpacing:"-0.01em",marginBottom:6}}>improvements to data analysis in chatgpt</div>
@@ -967,9 +978,9 @@
               {label:"technical",val:"data analysis (ga, tableau) · html/css · notion · asana · crm platforms · email marketing"},
             ].map(function(s, i){
               return (
-                <div key={s.label} style={{display:"grid",gridTemplateColumns:"22px 140px 1fr",gap:"0 20px",marginBottom:24}}>
-                  <div/>
-                  <div style={{fontSize:12,color:"var(--dim)",paddingTop:2}}>{i===0 ? "areas of expertise" : ""}</div>
+                <div key={s.label} className="skill-row">
+                  <div className="skill-spacer"/>
+                  <div className="skill-label-col" style={{fontSize:12,color:"var(--dim)",paddingTop:2}}>{i===0 ? "areas of expertise" : ""}</div>
                   <div>
                     <div style={{fontSize:14,fontWeight:600,color:"var(--fg)",letterSpacing:"-0.01em",marginBottom:5}}>{s.label}</div>
                     <div style={{fontSize:13,color:"var(--dim)",lineHeight:1.78}}>{s.val}</div>
@@ -983,10 +994,10 @@
           <div style={{animation:"fadeUp 0.5s 0.38s ease both"}}>
             <div style={{fontSize:13,color:"var(--fg)",letterSpacing:"-0.01em",fontWeight:500,marginBottom:28}}>education</div>
             {(()=>{ var [hov,setHov]=React.useState(false); return (
-              <div style={{display:"grid",gridTemplateColumns:"22px 140px 1fr",gap:"0 20px"}}
+              <div className="edu-row"
                 onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}>
-                <div style={{paddingTop:4}}><div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:hov?1:0,transform:hov?"scale(1)":"scale(0.3)"}}/></div>
-                <div style={{fontSize:12,color:"var(--dim)",paddingTop:2}}></div>
+                <div className="edu-dot" style={{paddingTop:4}}><div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:hov?1:0,transform:hov?"scale(1)":"scale(0.3)"}}/></div>
+                <div className="edu-spacer" style={{fontSize:12,color:"var(--dim)",paddingTop:2}}></div>
                 <div>
                   <div style={{fontSize:14,fontWeight:600,color:"var(--fg)",letterSpacing:"-0.01em",marginBottom:3}}>
                     <a href="https://luc.edu" target="_blank" style={{color:"var(--fg)",textDecoration:"none"}} >loyola university chicago</a>
