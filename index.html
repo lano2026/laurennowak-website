@@ -106,6 +106,9 @@
       .edu-dot    { display: none; }
       .edu-spacer { display: none; }
     }
+    @media (min-width: 621px) {
+      .wm-names { display: flex; flex-direction: row; gap: 0.28em; }
+    }
     .wrow:hover { opacity: 0.42; }
 
     .vcard { cursor: pointer; break-inside: avoid; margin-bottom: 18px; }
@@ -601,8 +604,10 @@
     var isz=Math.round(sz*0.95);
     return (
       <div style={{fontSize:sz,fontWeight:wt,letterSpacing:"-0.02em",lineHeight:1.1,fontFamily:"inherit"}}>
-        <div>lauren</div>
-        <div>nowak</div>
+        <div className="wm-names">
+          <div>lauren</div>
+          <div>nowak</div>
+        </div>
         <div style={{display:"flex",alignItems:"center",gap:4,marginTop:2}}>
           <ElementIcon name={icon} color={dc} size={isz}/>
           <span style={{color:dc,letterSpacing:"0.04em"}}>ai</span>
