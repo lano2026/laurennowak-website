@@ -666,6 +666,9 @@
     var [previewY, setPreviewY] = useState(0);
     var rightPanelRef = React.useRef(null);
     var videoRefs = React.useRef({});
+    var leaveTimer = React.useRef(null);
+    function scheduleClose() { leaveTimer.current = setTimeout(function(){ setActive(null); }, 150); }
+    function cancelClose() { clearTimeout(leaveTimer.current); }
     React.useEffect(function() {
       ["brandCheck","opsAudit","caseStudy"].forEach(function(flag) {
         var el = videoRefs.current[flag];
@@ -691,7 +694,7 @@
               return (
                 <div key={b.id} className="build-row"
                   style={{animation:"fadeIn 0.5s "+(0.08*i)+"s ease both",cursor:(b.caseStudy||b.opsAudit||b.brandCheck)?"pointer":"default"}}
-                  onMouseEnter={(e)=>{setActive(b);if(rightPanelRef.current){var ir=e.currentTarget.getBoundingClientRect();var pr=rightPanelRef.current.getBoundingClientRect();var rawY=ir.top-pr.top;var previewW=pr.width-40;var previewH=previewW*(9/16);var maxY=pr.height-previewH-20;setPreviewY(Math.max(20,Math.min(rawY,maxY)));}}} onMouseLeave={()=>setActive(null)}
+                  onMouseEnter={(e)=>{cancelClose();setActive(b);if(rightPanelRef.current){var ir=e.currentTarget.getBoundingClientRect();var pr=rightPanelRef.current.getBoundingClientRect();var rawY=ir.top-pr.top;var previewW=pr.width-40;var previewH=previewW*(9/16);var maxY=pr.height-previewH-20;setPreviewY(Math.max(20,Math.min(rawY,maxY)));}}} onMouseLeave={scheduleClose}
                   onClick={b.caseStudy ? ()=>setPage("caseStudy") : b.opsAudit ? ()=>setPage("opsAudit") : b.brandCheck ? ()=>setPage("brandCheck") : undefined}>
                   <div style={{width:22,flexShrink:0,paddingTop:5}}>
                     <div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:isA?1:0,transform:isA?"scale(1)":"scale(0.3)",marginTop:2}}/>
@@ -721,7 +724,7 @@
         </div>
 
         {/* RIGHT */}
-        <div className="home-right" ref={rightPanelRef} style={{position:"relative",overflow:"hidden"}}>
+        <div className="home-right" ref={rightPanelRef} onMouseEnter={cancelClose} onMouseLeave={scheduleClose} style={{position:"relative",overflow:"hidden"}}>
 
           {/* Video previews always in DOM — opacity toggle means no load delay on hover */}
           {[
