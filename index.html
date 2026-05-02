@@ -697,7 +697,12 @@
                     <div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:isA?1:0,transform:isA?"scale(1)":"scale(0.3)",marginTop:2}}/>
                   </div>
                   <div>
-                    <div style={{fontSize:19,fontWeight:400,color:"var(--fg)",letterSpacing:"-0.02em",lineHeight:1.4}}>{b.title}</div>
+                    <div style={{display:"flex",alignItems:"center",gap:8}}>
+                      <div style={{fontSize:19,fontWeight:400,color:"var(--fg)",letterSpacing:"-0.02em",lineHeight:1.4}}>{b.title}</div>
+                      {(b.caseStudy||b.opsAudit||b.brandCheck) && (
+                        <span style={{fontSize:17,color:"var(--fg)",opacity:isA?1:0,transition:"opacity 0.18s ease"}}>→</span>
+                      )}
+                    </div>
                     <div style={{fontSize:14,color:"var(--dim)",marginTop:4,lineHeight:1.5}}>{b.sub}</div>
                   </div>
                 </div>
