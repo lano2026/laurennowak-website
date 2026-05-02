@@ -97,6 +97,7 @@
     .wrow      { transition: opacity 0.15s; cursor: pointer; padding: 10px 0; display: flex; justify-content: space-between; align-items: baseline; }
     .rrow      { display: grid; grid-template-columns: 22px 140px 1fr; gap: 0 20px; padding-bottom: 36px; margin-bottom: 36px; }
     .rrow-role { font-weight: 600; }
+    .resume-item-title { font-weight: 600; }
     .rrow-dot  { padding-top: 4px; }
     .rrow-meta { padding-top: 2px; }
     .recog-row  { display: grid; grid-template-columns: 22px 140px 1fr; gap: 0 20px; text-decoration: none; }
@@ -108,6 +109,7 @@
       .rrow-meta { display: flex; align-items: baseline; gap: 6px; margin-bottom: 5px; flex-wrap: nowrap; }
       .rrow-meta > div { margin-bottom: 0 !important; }
       .rrow-role { font-weight: 400; font-size: 14px !important; margin-bottom: 6px !important; }
+      .resume-item-title { font-weight: 400; }
       .rrow-parent { display: none; }
       .recog-row  { display: block; }
       .recog-dot  { display: none; }
@@ -979,7 +981,7 @@
                 <div className="recog-dot" style={{paddingTop:4}}><div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:hov?1:0,transform:hov?"scale(1)":"scale(0.3)"}}/></div>
                 <div style={{fontSize:12,color:"var(--dim)",paddingTop:2}}>2024</div>
                 <div style={{fontSize:13,color:"var(--dim)",lineHeight:1.78}}>
-                  <div style={{fontSize:14,fontWeight:600,color:"var(--fg)",letterSpacing:"-0.01em",marginBottom:6}}>improvements to data analysis in chatgpt</div>
+                  <div className="resume-item-title" style={{fontSize:14,color:"var(--fg)",letterSpacing:"-0.01em",marginBottom:6}}>improvements to data analysis in chatgpt</div>
                   quoted in openai's article contributing insights on how ai makes data analysis more accessible for professionals.
                 </div>
               </a>
@@ -999,7 +1001,7 @@
                   <div className="skill-spacer"/>
                   <div className="skill-label-col" style={{fontSize:12,color:"var(--dim)",paddingTop:2}}>{i===0 ? "areas of expertise" : ""}</div>
                   <div>
-                    <div style={{fontSize:14,fontWeight:600,color:"var(--fg)",letterSpacing:"-0.01em",marginBottom:5}}>{s.label}</div>
+                    <div className="resume-item-title" style={{fontSize:14,color:"var(--fg)",letterSpacing:"-0.01em",marginBottom:5}}>{s.label}</div>
                     <div style={{fontSize:13,color:"var(--dim)",lineHeight:1.78}}>{s.val}</div>
                   </div>
                 </div>
@@ -1016,7 +1018,7 @@
                 <div className="edu-dot" style={{paddingTop:4}}><div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:hov?1:0,transform:hov?"scale(1)":"scale(0.3)"}}/></div>
                 <div className="edu-spacer" style={{fontSize:12,color:"var(--dim)",paddingTop:2}}></div>
                 <div>
-                  <div style={{fontSize:14,fontWeight:600,color:"var(--fg)",letterSpacing:"-0.01em",marginBottom:3}}>
+                  <div className="resume-item-title" style={{fontSize:14,color:"var(--fg)",letterSpacing:"-0.01em",marginBottom:3}}>
                     <a href="https://luc.edu" target="_blank" style={{color:"var(--fg)",textDecoration:"none"}} >loyola university chicago</a>
                   </div>
                   <div style={{fontSize:13,color:"var(--dim)"}}>ba, advertising & public relations</div>
