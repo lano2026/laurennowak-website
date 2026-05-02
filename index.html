@@ -134,8 +134,11 @@
 
     .tweaks-panel { position: fixed; bottom: 22px; right: 22px; background: #111; color: #fff; border-radius: 12px; padding: 18px 20px; width: 212px; z-index: 9999; box-shadow: 0 8px 40px rgba(0,0,0,0.22); animation: fadeIn 0.2s ease; }
 
+    .home-grid { overflow: hidden; }
+    .home-left, .home-right { min-width: 0; }
+
     @media (max-width: 768px) {
-      .home-grid { grid-template-columns: 1fr !important; height: auto !important; }
+      .home-grid { grid-template-columns: 1fr !important; height: auto !important; overflow: visible !important; }
       .home-right { display: none !important; }
       .home-left { padding: 80px 28px 60px 28px !important; }
       .videos-grid { grid-template-columns: 1fr !important; }
