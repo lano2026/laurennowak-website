@@ -1155,7 +1155,7 @@
       document.documentElement.classList[T.darkMode?"add":"remove"]("dark");
     }, [T.darkMode]);
     useEffect(()=>{
-      var titles = {home:"lauren nowak",experience:"about—lauren nowak",caseStudy:"multi-agent orchestrator—lauren nowak",opsAudit:"marketing ops audit—lauren nowak",brandCheck:"brand check—lauren nowak",videos:"videos—lauren nowak",resume:"resume—lauren nowak",writing:"writing—lauren nowak"};
+      var titles = {home:"lauren nowak",experience:"about—lauren nowak",caseStudy:"multi-agent—lauren nowak",opsAudit:"ops audit—lauren nowak",brandCheck:"brand check—lauren nowak",videos:"videos—lauren nowak",resume:"resume—lauren nowak",writing:"writing—lauren nowak"};
       document.title = titles[page] || (page.startsWith("article_") ? "writing—lauren nowak" : "lauren nowak");
     }, [page]);
 
