@@ -150,6 +150,7 @@
       nav { padding: 0 20px !important; }
       nav > div { gap: 12px !important; }
       .nav-lnk { font-size: 11px !important; }
+      .home-about { margin-top: 56px !important; padding-top: 0 !important; }
     }
   </style>
 </head>
@@ -715,7 +716,7 @@
           {(()=>{
             var [hovAbout,setHovAbout] = React.useState(false);
             return (
-              <div style={{marginTop:"auto",paddingTop:20,cursor:"pointer",display:"flex",alignItems:"center"}}
+              <div className="home-about" style={{marginTop:"auto",paddingTop:20,cursor:"pointer",display:"flex",alignItems:"center"}}
                 onMouseEnter={()=>setHovAbout(true)}
                 onMouseLeave={()=>setHovAbout(false)}
                 onClick={()=>setPage("experience")}>
