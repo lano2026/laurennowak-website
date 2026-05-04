@@ -1120,15 +1120,36 @@
   /* ─── APP ───────────────────────────────────────────────── */
 
   function App() {
-    var [page,   setPage]      = useState("home");
+    var PATH_TO_PAGE = {
+      "/":            "home",
+      "/multi-agent": "caseStudy",
+      "/ops-audit":   "opsAudit",
+      "/brand-check": "brandCheck",
+      "/about":       "experience",
+      "/resume":      "resume",
+      "/videos":      "videos",
+      "/writing":     "writing",
+      "/writing/1":   "article_1",
+      "/writing/2":   "article_2",
+      "/writing/3":   "article_3",
+    };
+    var PAGE_TO_PATH = Object.fromEntries(Object.entries(PATH_TO_PAGE).map(([k,v])=>[v,k]));
+
+    var [page,   setPage]      = useState(()=> PATH_TO_PAGE[window.location.pathname] || "home");
     var [T,      setT]         = useState(TWEAK_DEFAULTS);
     var [showTw, setShowTw]    = useState(false);
 
     useEffect(()=>{
-      var build = new URLSearchParams(window.location.search).get('build');
-      var valid = {caseStudy:1,opsAudit:1,brandCheck:1};
-      if (build && valid[build]) setPage(build);
+      var path = PAGE_TO_PATH[page] || "/";
+      if(window.location.pathname !== path) window.history.pushState(null, "", path);
+    }, [page]);
+
+    useEffect(()=>{
+      function onPop() { setPage(PATH_TO_PAGE[window.location.pathname] || "home"); }
+      window.addEventListener("popstate", onPop);
+      return ()=>window.removeEventListener("popstate", onPop);
     }, []);
+
     useEffect(()=>{ document.documentElement.style.setProperty("--dot", T.dotColor); }, [T.dotColor]);
     useEffect(()=>{
       document.documentElement.classList[T.darkMode?"add":"remove"]("dark");

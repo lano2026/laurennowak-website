@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+
+# Large media files (hosted externally, not deployed via git)
+*.mp4
+*.mov
+
+# Local screenshots and brand assets not part of the deployed site
+Brand Assets /
+Claude Static.png
+NBER Working Paper Series.png
+Screenshot required reading.png
+anthropic new model .png
+mythos screenshot .png
+zero shot leanring .png
+
+# Claude Code local config
+.claude/
