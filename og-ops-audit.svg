@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
+  <rect width="1200" height="630" fill="#ffffff"/>
+  <circle cx="80" cy="228" r="18" fill="#2563EB"/>
+  <text x="114" y="246" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="52" font-weight="600" fill="#111111">marketing ops audit</text>
+  <text x="114" y="318" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="34" fill="#888888">surfaces single points of failure before they become real problems.</text>
+  <text x="1120" y="598" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" fill="#cccccc">laurennowak.ai</text>
+</svg>

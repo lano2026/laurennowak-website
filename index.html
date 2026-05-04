@@ -1040,7 +1040,7 @@
       <div style={{minHeight:"100vh",paddingTop:62}}>
         <div style={{maxWidth:640,margin:"0 auto",padding:"60px 40px 100px"}}>
           <div style={{marginBottom:48,animation:"fadeUp 0.5s ease both"}}>
-            <p style={{fontSize:15,color:"var(--dim)",lineHeight:1.8,maxWidth:440,paddingLeft:22}}>i care deeply about people, technology, and products. i write about what i'm building and what i'm learning.</p>
+            <p style={{fontSize:15,color:"var(--dim)",lineHeight:1.8,maxWidth:440}}>i care deeply about people, technology, and products. i write about what i'm building and what i'm learning.</p>
           </div>
           <div>
             {WRITING.map((w,i)=>{
@@ -1124,6 +1124,11 @@
     var [T,      setT]         = useState(TWEAK_DEFAULTS);
     var [showTw, setShowTw]    = useState(false);
 
+    useEffect(()=>{
+      var build = new URLSearchParams(window.location.search).get('build');
+      var valid = {caseStudy:1,opsAudit:1,brandCheck:1};
+      if (build && valid[build]) setPage(build);
+    }, []);
     useEffect(()=>{ document.documentElement.style.setProperty("--dot", T.dotColor); }, [T.dotColor]);
     useEffect(()=>{
       document.documentElement.classList[T.darkMode?"add":"remove"]("dark");

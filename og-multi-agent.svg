@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
+  <rect width="1200" height="630" fill="#ffffff"/>
+  <circle cx="80" cy="210" r="18" fill="#2563EB"/>
+  <text x="114" y="228" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="52" font-weight="600" fill="#111111">multi-agent marketing</text>
+  <text x="114" y="294" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="52" font-weight="600" fill="#111111">orchestrator</text>
+  <text x="114" y="366" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="34" fill="#888888">objective to complete marketing brief in under two minutes.</text>
+  <text x="1120" y="598" text-anchor="end" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" fill="#cccccc">laurennowak.ai</text>
+</svg>
