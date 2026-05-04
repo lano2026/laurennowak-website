@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://www.laurennowak.ai/</loc><priority>1.0</priority></url>
+  <url><loc>https://www.laurennowak.ai/about</loc><priority>0.8</priority></url>
+  <url><loc>https://www.laurennowak.ai/resume</loc><priority>0.8</priority></url>
+  <url><loc>https://www.laurennowak.ai/writing</loc><priority>0.7</priority></url>
+  <url><loc>https://www.laurennowak.ai/videos</loc><priority>0.7</priority></url>
+  <url><loc>https://www.laurennowak.ai/multi-agent</loc><priority>0.6</priority></url>
+  <url><loc>https://www.laurennowak.ai/ops-audit</loc><priority>0.6</priority></url>
+  <url><loc>https://www.laurennowak.ai/brand-check</loc><priority>0.6</priority></url>
+</urlset>
