@@ -695,6 +695,7 @@
     var [active, setActive] = useState(null);
     var [previewY, setPreviewY] = useState(0);
     var rightPanelRef = React.useRef(null);
+    var firstBuildRef = React.useRef(null);
     var videoRefs = React.useRef({});
     var leaveTimer = React.useRef(null);
     function scheduleClose() { leaveTimer.current = setTimeout(function(){ setActive(null); }, 150); }
@@ -718,13 +719,14 @@
               i love building the bridge between ai and the humans using it
             </div>
           </div>
-          <div>
+          <div style={{flex:1}}>
             {BUILDS.map((b,i)=>{
               var isA = active&&active.id===b.id;
               return (
                 <div key={b.id} className="build-row"
+                  ref={i===0?function(el){firstBuildRef.current=el;}:null}
                   style={{animation:"fadeIn 0.5s "+(0.08*i)+"s ease both",cursor:(b.caseStudy||b.opsAudit||b.brandCheck)?"pointer":"default"}}
-                  onMouseEnter={(e)=>{cancelClose();setActive(b);if(rightPanelRef.current){var ir=e.currentTarget.getBoundingClientRect();var pr=rightPanelRef.current.getBoundingClientRect();var rawY=ir.top-pr.top;var previewW=pr.width-40;var previewH=previewW*(9/16);var maxY=pr.height-previewH-20;setPreviewY(Math.max(20,Math.min(rawY,maxY)));}}} onMouseLeave={scheduleClose}
+                  onMouseEnter={(e)=>{cancelClose();setActive(b);if(rightPanelRef.current&&firstBuildRef.current){var ir=firstBuildRef.current.getBoundingClientRect();var pr=rightPanelRef.current.getBoundingClientRect();var rawY=ir.top-pr.top;var previewW=pr.width-40;var previewH=previewW*(9/16);var maxY=pr.height-previewH-20;setPreviewY(Math.max(20,Math.min(rawY,maxY)));}}}} onMouseLeave={scheduleClose}
                   onClick={b.caseStudy ? ()=>setPage("caseStudy") : b.opsAudit ? ()=>setPage("opsAudit") : b.brandCheck ? ()=>setPage("brandCheck") : undefined}>
                   <div style={{width:22,flexShrink:0,paddingTop:5}}>
                     <div style={{width:7,height:7,borderRadius:"50%",background:T.dotColor,transition:"opacity 0.18s,transform 0.18s",opacity:isA?1:0,transform:isA?"scale(1)":"scale(0.3)",marginTop:2}}/>
@@ -740,7 +742,7 @@
           {(()=>{
             var [hovAbout,setHovAbout] = React.useState(false);
             return (
-              <div className="home-about" style={{marginTop:"auto",paddingTop:20,cursor:"pointer",display:"flex",alignItems:"center"}}
+              <div className="home-about" style={{paddingTop:20,cursor:"pointer",display:"flex",alignItems:"center"}}
                 onMouseEnter={()=>setHovAbout(true)}
                 onMouseLeave={()=>setHovAbout(false)}
                 onClick={()=>setPage("experience")}>
