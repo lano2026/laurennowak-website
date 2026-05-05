@@ -163,6 +163,8 @@
 
     .home-grid { overflow: hidden; }
     .home-left, .home-right { min-width: 0; }
+    .home-left { scrollbar-width: none; }
+    .home-left::-webkit-scrollbar { display: none; }
 
     @media (max-width: 768px) {
       .home-grid { grid-template-columns: 1fr !important; height: auto !important; overflow: visible !important; }
