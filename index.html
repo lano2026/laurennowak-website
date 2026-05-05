@@ -719,7 +719,7 @@
               i love building the bridge between ai and the humans using it
             </div>
           </div>
-          <div style={{flex:1}}>
+          <div>
             {BUILDS.map((b,i)=>{
               var isA = active&&active.id===b.id;
               return (
@@ -742,7 +742,7 @@
           {(()=>{
             var [hovAbout,setHovAbout] = React.useState(false);
             return (
-              <div className="home-about" style={{paddingTop:20,cursor:"pointer",display:"flex",alignItems:"center"}}
+              <div className="home-about" style={{marginTop:"auto",paddingTop:20,cursor:"pointer",display:"flex",alignItems:"center"}}
                 onMouseEnter={()=>setHovAbout(true)}
                 onMouseLeave={()=>setHovAbout(false)}
                 onClick={()=>setPage("experience")}>
