@@ -165,6 +165,7 @@
     .home-left, .home-right { min-width: 0; }
     .home-left { scrollbar-width: none; }
     .home-left::-webkit-scrollbar { display: none; }
+    .mt-auto { margin-top: auto !important; }
 
     @media (max-width: 768px) {
       .home-grid { grid-template-columns: 1fr !important; height: auto !important; overflow: visible !important; }
@@ -742,7 +743,7 @@
           {(()=>{
             var [hovAbout,setHovAbout] = React.useState(false);
             return (
-              <div className="home-about" style={{marginTop:"auto",paddingTop:20,cursor:"pointer",display:"flex",alignItems:"center"}}
+              <div className="home-about mt-auto" style={{marginTop:"auto",paddingTop:20,cursor:"pointer",display:"flex",alignItems:"center"}}
                 onMouseEnter={()=>setHovAbout(true)}
                 onMouseLeave={()=>setHovAbout(false)}
                 onClick={()=>setPage("experience")}>
